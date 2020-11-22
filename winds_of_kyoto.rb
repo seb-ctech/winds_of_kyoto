@@ -85,7 +85,7 @@ define :sample_preview do
   sleep sd
 end
 
-define :combar_sequence1 do
+define :combat_sequence1 do
   4.times do
     combat1
   end
@@ -107,7 +107,7 @@ end
 
 in_thread(name: :winds_of_kyoto) do 
   loop  do
-    combar_sequence1
+    combat_sequence1
     sleep rrand_i(20, 40)
   end
 end
