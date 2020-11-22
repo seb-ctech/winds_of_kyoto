@@ -24,10 +24,16 @@ kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bambooch
 
 # loops --> succession of different passages
 
-live_loop :winds_of_kyoto do
+in_thread(name: :winds_of_kyoto) do 
+  loop  do
+    hey_short
+    sleep 15
+  end
+end
+
+loop do
   atmo1
-  hey
-  sleep 15
+  sleep 30
 end
 
 # passages --> how phrases are organized in musical structure
