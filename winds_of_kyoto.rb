@@ -22,6 +22,30 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+# loops --> succession of different passages
+
+live_loop :winds_of_kyoto do
+  atmo1
+  hey
+  sleep 15
+end
+
+# passages --> how phrases are organized in musical structure
+
+define :atmo1 do
+  with_fx :reverb, room: 0.7 do
+    sample s_wind
+    if one_in(4)
+      sample s_birds
+    end
+    bamboo_decoration
+  end
+  ghongh
+  with_fx :echo do
+    sample s_stream
+  end
+end
+
 define :sample_preview do
   current_sample = s_stream
   sd = sample_duration(current_sample);
@@ -40,19 +64,27 @@ define :bamboo_decoration do
   end
 end
 
+# phrases --> repetition and variation, has a definite rhythm, punctuation
 
-define :atmo1 do
-  with_fx :reverb do
-    sample s_wind
-    sample s_birds
-    bamboo_decoration
-  end
-  with_fx :echo do
-    sample s_stream
+
+
+## motifs --> Harmonized and Rhythmical
+
+define :hey_short do
+  sample s_kshout, start: 0, finish: 0.3, release: 0.2
+end
+
+
+define :ghongh do
+  with_fx :reverb, room: 0.8 do
+    sample s_gongwarm
   end
 end
 
-live_loop :winds_of_kyoto do
-  atmo1
-  sleep 15
+define :panshout do
+  with_fx :reverb, room: rrand(0, 1) do
+    shout = sample s_kshout, pan: -1, pan_slide: 1
+    sleep 0.2
+    control shout, pan: 1
+  end
 end
