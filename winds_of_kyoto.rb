@@ -22,18 +22,43 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
-# loops --> succession of different passages
 
-in_thread(name: :winds_of_kyoto) do 
-  loop  do
-    hey_short
-    sleep 15
+## motifs --> Harmonized and Rhythmical, variation through randomness
+
+define :hey_short do
+  if one_in(2)
+    sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.5, 1.4)
   end
 end
 
-loop do
-  atmo1
-  sleep 30
+define :ghongh do
+  with_fx :reverb, room: 0.8 do
+    sample s_gongwarm
+  end
+end
+
+define :panshout do
+  with_fx :reverb, room: rrand(0, 1) do
+    shout = sample s_kshout, pan: -1, pan_slide: 1
+    sleep 0.2
+    control shout, pan: 1
+  end
+end
+
+define :katana_combat do
+  sample s_katana, rate: 1.0
+  sleep [0.5, 0.8, 1.2, 2.0].choose
+  sample s_katana, rate: 0.6
+  sleep [0.2, 0.8].choose
+  sample s_katana, rate: 1.0
+end
+
+# phrases --> repetition and variation, has a definite rhythm, punctuation
+
+define :combat1 do
+    hey_short
+    sleep 3
+    katana_combat
 end
 
 # passages --> how phrases are organized in musical structure
@@ -60,6 +85,13 @@ define :sample_preview do
   sleep sd
 end
 
+define :combar_sequence1 do
+  4.times do
+    combat1
+  end
+  sleep 1
+end
+
 define :bamboo_decoration do
   if one_in(3)
     bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: rrand(0, 0.5), finish: rrand(0.5, 1), pan: 0, pan_slide: 0.2, attack: 2, release: 3
@@ -70,27 +102,17 @@ define :bamboo_decoration do
   end
 end
 
-# phrases --> repetition and variation, has a definite rhythm, punctuation
 
+# loops --> succession of different passages
 
-
-## motifs --> Harmonized and Rhythmical
-
-define :hey_short do
-  sample s_kshout, start: 0, finish: 0.3, release: 0.2
-end
-
-
-define :ghongh do
-  with_fx :reverb, room: 0.8 do
-    sample s_gongwarm
+in_thread(name: :winds_of_kyoto) do 
+  loop  do
+    combar_sequence1
+    sleep rrand_i(20, 40)
   end
 end
 
-define :panshout do
-  with_fx :reverb, room: rrand(0, 1) do
-    shout = sample s_kshout, pan: -1, pan_slide: 1
-    sleep 0.2
-    control shout, pan: 1
-  end
+loop do
+  atmo1
+  sleep 30
 end
