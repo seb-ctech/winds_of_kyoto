@@ -22,12 +22,12 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
-
-## motifs --> Harmonized and Rhythmical, variation through randomness
+#TODO: Create interesting motifs with variable opts and good variations
+## motifs --> Harmonized and Rhythmical, variation through randomness, they musn't change too much in Rhythm!
 
 define :hey_short do
   if one_in(2)
-    sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.5, 1.4)
+    sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.7, 1.2)
   end
 end
 
@@ -47,20 +47,29 @@ end
 
 define :katana_combat do
   sample s_katana, rate: 1.0
-  sleep [0.5, 0.8, 1.2, 2.0].choose
+  sleep [0.125, 0.5, 1].choose
   sample s_katana, rate: 0.6
-  sleep [0.2, 0.8].choose
+  sleep [0.125, 0.250].choose
+  sample s_katana, rate: 1.4
+  sleep [0.250, 0.075].choose
   sample s_katana, rate: 1.0
 end
 
+#TODO: Make Phrases that sound harmonic and well timed (defined)
 # phrases --> repetition and variation, has a definite rhythm, punctuation
 
 define :combat1 do
     hey_short
-    sleep 3
+    sleep [1, 2].choose
+    hey_short
+    sleep [0.5, 1].choose
     katana_combat
+    if one_in(4)
+      panshout
+    end
 end
 
+#TODO: Create dramaturgy, so it sounds complete
 # passages --> how phrases are organized in musical structure
 
 define :atmo1 do
@@ -86,7 +95,7 @@ define :sample_preview do
 end
 
 define :combat_sequence1 do
-  4.times do
+  rrand_i(3,9).times do
     combat1
   end
   sleep 1
@@ -103,16 +112,17 @@ define :bamboo_decoration do
 end
 
 
+#TODO: Make an intro, 3 random (for development) and a final passage.
 # loops --> succession of different passages
 
 in_thread(name: :winds_of_kyoto) do 
-  loop  do
+  loop do
     combat_sequence1
-    sleep rrand_i(20, 40)
+    sleep rrand_i(10, 20)
   end
 end
 
 loop do
   atmo1
-  sleep 30
+  sleep 20
 end
