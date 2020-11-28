@@ -22,8 +22,23 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+# Instruments and Parametrized Samples. To be used to form the motifs
+
+# Samples
+
+
+# Substractive Sound (use filters to create interesting sounds out of the)
+
+
+# Additive Sound (Use synths that overlap to produce interesting flute like sound)
+
+
+# Effects (EQ,...)
+
+
 #TODO: Create interesting motifs with variable opts and good variations
 ## motifs --> Harmonized and Rhythmical, variation through randomness, they musn't change too much in Rhythm!
+# change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion
 
 define :hey_short do
   if one_in(2)
@@ -55,8 +70,8 @@ define :katana_combat do
   sample s_katana, rate: 1.0
 end
 
-#TODO: Make Phrases that sound harmonic and well timed (defined)
-# phrases --> repetition and variation, has a definite rhythm, punctuation
+#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
+# phrases --> repetition and variation, has a definite rhythm, punctuation, 4 bars.
 
 define :combat1 do
     hey_short
