@@ -22,6 +22,9 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+define :harmonic do |bf, n|
+  return bf * n
+end
 
 define :octave do |m| 
   return 12 * m
@@ -35,33 +38,54 @@ end
 
 
 # Additive Sound (Use synths that overlap to produce interesting flute like sound)
-define :synth_flute do |n, s|
-  attack = 0.05
-  synth :sine, note: n - octave(1) + 4, amp: 0.05, attack: attack, decay: 0.2, release: 0.3, sustain: s
-  main = synth :sine, note: n, attack: attack, decay: 0.2, release: 0.3, sustain: s
-  h1 = synth :sine, note: n + octave(1), amp: 0.2, attack: attack, decay: 0.2, release: 0.3, sustain: s
-  h2 = synth :sine, note: n + octave(2) - 0.1, amp: 0.02, attack: attack, decay: 0.2, release: 0.3, sustain: s
-  h3 = synth :sine, note: n + octave(2), amp: 0.01, attack: attack * 1.2, decay: 0.2, release: 0.3, sustain: s
-  h4 = synth :sine, note: n + octave(2) + 0.1, amp: 0.02, attack: attack, decay: 0.2, release: 0.3, sustain: s
-  h5 = synth :sine, note: n + octave(3) + 0.2, amp: 0.02, attack: attack * 1.2, decay: 0.2, release: 0.3, sustain: s
-  h6 = synth :sine, note: n + octave(3) + 0.3, amp: 0.01, attack: attack * 1.5, decay: 0.2, release: 0.3, sustain: s
-  sleep 0.5
-  20.times do
-    if one_in(3) do
-      shift = rrand(-1, 1)
-      shift_big = rrand(-2, 2)
-      control main, note: n + shift, note_slide: 0.3
-      control h1, note: n + + octave(1) + shift, note_slide: 0.5
-      control h2, note: n + octave(2) + shift, note_slide: 0.4
-      control h3, note: n + octave(2) + shift_big, note_slide: 0.2
-      control h4, note: n + octave(2) + shift_big, note_slide: 0.2
+define :synth_flute do |n, su, a|
+  attack = 0.15
+  s = su - attack - 0.2
+  if s < 0
+    s = 0
+  end
+  f = midi_to_hz(n)
+  # Fundamental Frequency
+  main = synth :sine, note: n, amp: a * 1.5, attack: attack, attack_level: 1.2, decay: 0.4, release: 0.3, sustain: s
+  # Harmonics 
+  h2 = synth :sine, note: hz_to_midi( harmonic(f, 2) ), amp: a * 0.8, attack: attack, decay: 0.2, release: 0.2, sustain: s
+  h3 = synth :sine, note: hz_to_midi( harmonic(f, 2.5) ), amp: a * 0.05, attack: attack * 1.5, decay: 0.1, release: 0.2, sustain: s
+  with_fx :tremolo, phase: 0.4, depth: 0.3 do
+    h4 = synth :sine, note: hz_to_midi( harmonic(f, 3) ), amp: a * 0.2, attack: attack * 1.2, decay: 0.2, release: 0.2, sustain: s
+    h5 = synth :sine, note: hz_to_midi( harmonic(f, 3.5) ), amp: a * 0.05, attack: attack * 2, decay: 0.2, release: 0.1, sustain: s
+    h6 = synth :sine, note: hz_to_midi( harmonic(f, 4) ), amp: a * 0.02, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
+    h7 = synth :sine, note: hz_to_midi( harmonic(f, 5) ), amp: a * 0.02, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
+    h8 = synth :sine, note: hz_to_midi( harmonic(f, 6) ), amp: a * 0.01, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
+    h9 = synth :sine, note: hz_to_midi( harmonic(f, 7) ), amp: a * 0.01, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
+  end
+  # Noise and Texture
+  with_fx :lpf do
+    n1 = synth :noise, cutoff: hz_to_midi( harmonic(f, 0.5) ), amp: a * 0.01, attack: attack, decay: 0.2, release: 0.2, sustain: s
+  end
+  with_fx :band_eq, freq: hz_to_midi(harmonic(f, 4)), res: 0.2, amp: 0.5 do
+    n1 = synth :noise, cutoff: n + octave(1), amp: a * 0.2, attack: attack, decay: 0.2, release: 0.2, sustain: s
+    n2 = synth :noise, cutoff: hz_to_midi( harmonic(f, 4) ), amp: a * 0.3, attack: attack, decay: 0.2, release: 0.2, sustain: s
+  end
+  # Frequency Tremolo
+  if s > 1
+    sleep 1
+    frequency = 5
+    offset = 0.5
+    (2 * s).times do
+      period = rrand(0, 0.3)
+      shift_neg = -rrand(0, offset)
+      shift_pos = rrand(0, offset)
+      if one_in(2)
+          control main, note: n + shift_neg, note_slide: period
+          control h2, note: hz_to_midi( harmonic(f, 2) ) + shift_neg, note_slide: period 
+          control h3, note: hz_to_midi( harmonic(f, 2) ) + shift_pos, note_slide: period
+          sleep period
+      end
+      control main, note: n, note_slide: period
+      control h2, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
+      control h3, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
+      sleep 0.1
     end
-    control main, note: n, note_slide: 0.3
-    control h1, note: n + octave(1), note_slide: 0.5
-    control h2, note: n + octave(2), note_slide: 0.4
-    control h3, note: n + octave(2), note_slide: 0.2
-    control h4, note: n + octave(2) + 0.1, note_slide: 0.2
-    sleep 0.5
   end
 end
 
@@ -164,16 +188,7 @@ end
 
 in_thread(name: :winds_of_kyoto) do 
   loop do
-    synth_flute :c5, 2
-    sleep 1
-    synth_flute :d5, 1
-    sleep 2
-    synth_flute :f5, 0.5
-    sleep 0.5
-    synth_flute :a4, 3
-    sleep 3
-
-    #combat_sequence1
-    #sleep rrand_i(10, 20)
+    synth_flute :c5, 4, 0.5
+    sleep 5
   end
 end
