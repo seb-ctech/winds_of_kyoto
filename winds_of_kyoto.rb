@@ -22,6 +22,10 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+
+define :octave do |m| 
+  return 12 * m
+end
 # Instruments and Parametrized Samples. To be used to form the motifs
 
 # Samples
@@ -31,9 +35,37 @@ kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bambooch
 
 
 # Additive Sound (Use synths that overlap to produce interesting flute like sound)
+define :synth_flute do |n, s|
+  attack = 0.05
+  synth :sine, note: n - octave(1) + 4, amp: 0.05, attack: attack, decay: 0.2, release: 0.3, sustain: s
+  main = synth :sine, note: n, attack: attack, decay: 0.2, release: 0.3, sustain: s
+  h1 = synth :sine, note: n + octave(1), amp: 0.2, attack: attack, decay: 0.2, release: 0.3, sustain: s
+  h2 = synth :sine, note: n + octave(2) - 0.1, amp: 0.02, attack: attack, decay: 0.2, release: 0.3, sustain: s
+  h3 = synth :sine, note: n + octave(2), amp: 0.01, attack: attack * 1.2, decay: 0.2, release: 0.3, sustain: s
+  h4 = synth :sine, note: n + octave(2) + 0.1, amp: 0.02, attack: attack, decay: 0.2, release: 0.3, sustain: s
+  h5 = synth :sine, note: n + octave(3) + 0.2, amp: 0.02, attack: attack * 1.2, decay: 0.2, release: 0.3, sustain: s
+  h6 = synth :sine, note: n + octave(3) + 0.3, amp: 0.01, attack: attack * 1.5, decay: 0.2, release: 0.3, sustain: s
+  sleep 0.5
+  20.times do
+    if one_in(3) do
+      shift = rrand(-1, 1)
+      shift_big = rrand(-2, 2)
+      control main, note: n + shift, note_slide: 0.3
+      control h1, note: n + + octave(1) + shift, note_slide: 0.5
+      control h2, note: n + octave(2) + shift, note_slide: 0.4
+      control h3, note: n + octave(2) + shift_big, note_slide: 0.2
+      control h4, note: n + octave(2) + shift_big, note_slide: 0.2
+    end
+    control main, note: n, note_slide: 0.3
+    control h1, note: n + octave(1), note_slide: 0.5
+    control h2, note: n + octave(2), note_slide: 0.4
+    control h3, note: n + octave(2), note_slide: 0.2
+    control h4, note: n + octave(2) + 0.1, note_slide: 0.2
+    sleep 0.5
+  end
+end
 
-
-# Effects (EQ,...)
+#Effects (EQ,...)
 
 
 #TODO: Create interesting motifs with variable opts and good variations
@@ -132,12 +164,16 @@ end
 
 in_thread(name: :winds_of_kyoto) do 
   loop do
-    combat_sequence1
-    sleep rrand_i(10, 20)
-  end
-end
+    synth_flute :c5, 2
+    sleep 1
+    synth_flute :d5, 1
+    sleep 2
+    synth_flute :f5, 0.5
+    sleep 0.5
+    synth_flute :a4, 3
+    sleep 3
 
-loop do
-  atmo1
-  sleep 20
+    #combat_sequence1
+    #sleep rrand_i(10, 20)
+  end
 end
