@@ -5,7 +5,6 @@ path_to_sounds = "D:/4_developing/ctech/theoretical-bg-audio-graphics/02/Winds_o
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
 s_bamboowoosh = path_to_sounds + "60013__qubodup__whoosh.flac"
-s_bamboowhip = path_to_sounds + "191766__underlineddesigns__bamboo-whip-sound-effect.wav"
 s_gongwarm = path_to_sounds + "207168__veiler__warm-gong.wav"
 s_katana = path_to_sounds + "215033__taira-komori__katana1.wav"
 
@@ -20,7 +19,7 @@ s_bamboochimes = path_to_sounds + "401040__inspectorj__bamboo-chimes-a.wav"
 s_bamboogmni = path_to_sounds + "67046__gmni__bamboo.wav"
 s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for excellent change of pith and bird timbre, 19 secs.
 
-kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboowhip, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
+kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
 define :harmonic do |bf, n|
   return bf * n
@@ -32,8 +31,52 @@ end
 # Instruments and Parametrized Samples. To be used to form the motifs
 
 # Samples
+define :short_drum do
+  sample s_gongwarm, finish: 0.12, release: 0.5, rate: 0.8
+end
 
+define :ren_trance do
+  sample s_renchant, rate: 0.7, amp: 0.2
+  sample s_renchant, rate: 0.8, amp: 0.3
+  sample s_renchant, rate: 0.96
+  sample s_renchant, rate: 0.98, amp: 0.7
+  sample s_renchant
+  sample s_renchant, rate: 1.12, amp: 0.6
+  sample s_renchant, rate: 1.14, amp: 0.4
+end
 
+define :wind_sweep do
+  s = sample s_wind, start: 0, finish: 0.1, amp: 2, rate: 0.5, attack: 0.2, release: 2, pan: -1
+  control s, pan: 1, pan_slide: 2
+  sleep 2
+  control s, pan: -1, pan_slide: 2
+end
+
+define :group_hey do
+  hey_short
+  sleep rrand(0, 0.2)
+  hey_short
+  sleep rrand(0, 0.2)
+  hey_short
+end
+
+define :random_woosh do
+  sample s_bamboowoosh, rate: rrand(0.5, 2)
+end
+
+define :bamchimes do
+  sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 2
+end
+
+define :random_word do |bgn, length|
+  fnh = bgn + length * 0.001
+  sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
+end
+
+define :sample_test do
+  
+  sleep sample_duration(s_renchant)
+end
 # Substractive Sound (use filters to create interesting sounds out of the)
 
 
@@ -46,7 +89,7 @@ define :synth_flute do |n, su, a|
   end
   f = midi_to_hz(n)
   # Fundamental Frequency
-  main = synth :sine, note: n, amp: a * 1.5, attack: attack, attack_level: 1.2, decay: 0.4, release: 0.3, sustain: s
+  main = synth :sine, note: n, amp: a, attack: attack, attack_level: 1.2, decay: 0.4, release: 0.3, sustain: s
   # Harmonics 
   h2 = synth :sine, note: hz_to_midi( harmonic(f, 2) ), amp: a * 0.8, attack: attack, decay: 0.2, release: 0.2, sustain: s
   h3 = synth :sine, note: hz_to_midi( harmonic(f, 2.5) ), amp: a * 0.05, attack: attack * 1.5, decay: 0.1, release: 0.2, sustain: s
@@ -90,16 +133,39 @@ define :synth_flute do |n, su, a|
 end
 
 #Effects (EQ,...)
+define :eq6 do |s, v1, v2, v3, v4, v5, v6|
+  with_fx :band_eq, freq: 40, res: 0.4, db: v1 do
+    with_fx :band_eq, freq: 60, res: 0.4, db: v2 do
+      with_fx :band_eq, freq: 80, res: 0.4, db: v3 do
+        with_fx :band_eq, freq: 90, res: 0.4, db: v4 do
+          with_fx :band_eq, freq: 100, res: 0.4, db: v5 do
+            with_fx :band_eq, freq: 120, res: 0.4, db: v6 do
+              sample s
+            end
+          end
+        end
+      end
+    end
+  end
+end
 
 
 #TODO: Create interesting motifs with variable opts and good variations
+
 ## motifs --> Harmonized and Rhythmical, variation through randomness, they musn't change too much in Rhythm!
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion
 
-define :hey_short do
-  if one_in(2)
-    sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.7, 1.2)
+define :flute_motif do
+  tonic = choose([:c4, :a4])
+  4.times do
+    dur = choose([0.250, 0.5])
+    synth_flute scale(tonic, :yu).choose, dur, 0.5
+    sleep dur * 1.4
   end
+end
+
+define :hey_short do
+  sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
 end
 
 define :ghongh do
@@ -188,7 +254,7 @@ end
 
 in_thread(name: :winds_of_kyoto) do 
   loop do
-    synth_flute :c5, 4, 0.5
-    sleep 5
+    sample_test
+    sleep 1
   end
 end
