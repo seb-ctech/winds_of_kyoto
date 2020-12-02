@@ -2,7 +2,7 @@
 
 This is my "Audio Production" project with the theme of Kyoto. Since my Trip to Japan that I planned this year got chancelled, due to the corona outbreak I wanted to make an hommage by using samples that represent nature and asian culture, to evoke an image of an idillic
 Japanese Temple somewhere on the country-side of Kyoto, that turns ritualistic and demonic during the night. The overarching Idea is to use
-sounds that occur through the air, like swinging sounds, wind-chimes, chants and wind. Hence the name of the composition: "Winds of Kyoto".
+sounds that propagate through the air, like swinging sounds, wind-chimes, chants and wind. Hence the name of the composition: "Winds of Kyoto".
 
 ## Setup
 
