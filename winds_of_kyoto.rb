@@ -1,6 +1,7 @@
 # Winds of Kyoto
 
-path_to_sounds = "./samples/"
+# Usage: change the root-folder to the path where you stored "Winds_of_Kyoto"
+path_to_sounds = "D:/4_developing/ctech/audio-graphics-workfolder/02/Winds_of_Kyoto/sonicpi/samples/"
 
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
@@ -249,13 +250,48 @@ define :bamboo_decoration do
   end
 end
 
+define :peaceful_temple do
+  group_hey
+end
+
+define :picking_up_the_pace do
+
+end
+
+define :passage_to_night do
+
+end
+
+define :demonic_ritual do
+
+end
+
+define :passage_to_morning do
+
+end
+
+define :back_to_peace do
+
+end
+
 
 #TODO: Make an intro, 3 random (for development) and a final passage.
 # loops --> succession of different passages
 
-in_thread(name: :winds_of_kyoto) do 
-  loop do
-    flute_motif
-    sleep 1
-  end
+define :winds_of_kyoto do
+
+  peaceful_temple
+  sleep 30
+  picking_up_the_pace
+  sleep 45
+  passage_to_night
+  sleep 15
+  demonic_ritual
+  sleep 45
+  passage_to_morning
+  sleep 15
+  back_to_peace
+
 end
+
+winds_of_kyoto

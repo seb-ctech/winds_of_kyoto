@@ -11,7 +11,8 @@ The Project was realised with Sonic Pi. To take advantage of a proper setup I de
 ## How to use
 
 You can either copy and paste my code in sonic-pi and run it, but that would produce errors, because of the missing samples.
-You can download my repository and run the code over the Visual Studio Code Extension "sonic-pi". For that you first need to run sonic pi seperately and then use the command-pallete to "Run Code on Sonic Pi". Otherwise just listen to the rendered audio file!
+You can download my repository and run the code over the Visual Studio Code Extension "sonic-pi". Then you need to change "path_to_sounds" to match your local path to the root-directory (Sonic-Pi specific problem). For that you first need to run sonic pi seperately and then use the command-pallete to "Run Code on Sonic Pi". Otherwise just listen to the rendered audio file!
+
 **Enjoy!**
 
 ### Quick note to the composition
