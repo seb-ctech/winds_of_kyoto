@@ -1,6 +1,6 @@
 # Winds of Kyoto
 
-path_to_sounds = "D:/4_developing/ctech/theoretical-bg-audio-graphics/02/Winds_of_Kyoto/sounds/"
+path_to_sounds = "./samples/"
 
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
