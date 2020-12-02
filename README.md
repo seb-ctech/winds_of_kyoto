@@ -18,3 +18,7 @@ You can download my repository and run the code over the Visual Studio Code Exte
 
 *The composition is organized in an intro and outro with an A and a B section in the middle, that raises the pace and the tension.
 The middle part uses many programming techniques to randomize the outcome and will sound differently on every run, if you change the "random_seed" because of how sonic-pi threats randomness.
+
+### Disclaimer
+
+I got the Sounds and Samples from [Freesound](https://freesound.org/). 
