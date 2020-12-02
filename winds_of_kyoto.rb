@@ -73,10 +73,7 @@ define :random_word do |bgn, length|
   sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
 end
 
-define :sample_test do
-  
-  sleep sample_duration(s_renchant)
-end
+
 # Substractive Sound (use filters to create interesting sounds out of the)
 
 
@@ -149,6 +146,10 @@ define :eq6 do |s, v1, v2, v3, v4, v5, v6|
   end
 end
 
+define :sample_test do
+  synth_flute :C5, 3, 0.5
+  sleep 3
+end
 
 #TODO: Create interesting motifs with variable opts and good variations
 
@@ -158,7 +159,7 @@ end
 define :flute_motif do
   tonic = choose([:c4, :a4])
   4.times do
-    dur = choose([0.250, 0.5])
+    dur = choose([0.150, 0.250, 0.5, 1])
     synth_flute scale(tonic, :yu).choose, dur, 0.5
     sleep dur * 1.4
   end
@@ -254,7 +255,7 @@ end
 
 in_thread(name: :winds_of_kyoto) do 
   loop do
-    sample_test
+    flute_motif
     sleep 1
   end
 end
