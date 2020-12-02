@@ -1,13 +1,12 @@
 # Winds of Kyoto
 
-This is my "Audio Production" project with theme of Kyoto. Since my Trip to Japan that I planned this year got chancelled, due to the corona
-outbreak I wanted to make an hommage by using samples that represent nature and asian culture, to evoke an image of an idillic
+This is my "Audio Production" project with the theme of Kyoto. Since my Trip to Japan that I planned this year got chancelled, due to the corona outbreak I wanted to make an hommage by using samples that represent nature and asian culture, to evoke an image of an idillic
 Japanese Temple somewhere on the country-side of Kyoto, that turns ritualistic and demonic during the night. The overarching Idea is to use
 sounds that occur through the air, like swinging sounds, wind-chimes, chants and wind. Hence the name of the composition: "Winds of Kyoto".
 
 ## Setup
 
-The Project was realised with Sonic Pi. To take advantage of a proper setup I developed the code inside "Visual Studio Code" and used the ruby-extension for syntax-highlighting. With the help of the "sonic-pi" extension in Visual Studio Code I can run the code on a opened sonic-pi instance. I also recorded a final "wav" for the final display.
+The Project was realised with Sonic Pi. To take advantage of a proper setup I developed the code inside "Visual Studio Code" and used the ruby-extension for syntax-highlighting. With the help of the "sonic-pi" extension in Visual Studio Code I can run the code on an opened sonic-pi instance. I also recorded a final "wav" for the final display.
 
 ## How to use
 
