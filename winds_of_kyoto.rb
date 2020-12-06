@@ -1,7 +1,7 @@
 # Winds of Kyoto
 
 # Usage: change the root-folder to the path where you stored "Winds_of_Kyoto"
-path_to_sounds = "D:/4_developing/ctech/audio-graphics-workfolder/02/Winds_of_Kyoto/sonicpi/samples/"
+path_to_sounds = "~/developing/ctech/winds_of_kyoto/samples/"
 
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
