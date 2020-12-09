@@ -22,6 +22,8 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+# Helper Functions
+
 define :harmonic do |bf, n|
   return bf * n
 end
@@ -29,14 +31,17 @@ end
 define :octave do |m| 
   return 12 * m
 end
-# Instruments and Parametrized Samples. To be used to form the motifs
 
-# Samples
-define :short_drum do
+# --------------------------------------
+# INSTRUMENTS
+# Instruments and Parametrized Samples. To be used to form the motifs
+# --------------------------------------
+
+define :in_short_drum do
   sample s_gongwarm, finish: 0.12, release: 0.5, rate: 0.8
 end
 
-define :ren_trance do
+define :in_ren_trance do
   sample s_renchant, rate: 0.7, amp: 0.2
   sample s_renchant, rate: 0.8, amp: 0.3
   sample s_renchant, rate: 0.96
@@ -46,40 +51,66 @@ define :ren_trance do
   sample s_renchant, rate: 1.14, amp: 0.4
 end
 
-define :wind_sweep do
+define :in_wind_sweep do
   s = sample s_wind, start: 0, finish: 0.1, amp: 2, rate: 0.5, attack: 0.2, release: 2, pan: -1
   control s, pan: 1, pan_slide: 2
   sleep 2
   control s, pan: -1, pan_slide: 2
 end
 
-define :group_hey do
+define :in_chion_part do |l, a|
+  len = l
+  amp = a
+  rstart = rrand(0, 1 - len)
+  sample s_chion, amp: a, pan: rrand(-1,1), start: rstart, finish: rstart + len, release: 2
+end
+
+define :in_group_hey do
   hey_short
-  sleep rrand(0, 0.2)
+  sleep rrand(0, 0.1)
   hey_short
-  sleep rrand(0, 0.2)
+  sleep rrand(0, 0.1)
   hey_short
 end
 
-define :random_woosh do
+define :in_beast do  |pitch, growl|
+  rate = 0.1 + (pitch * 0.02)
+  sample s_kshout, start: 0.7, release: 1, rate: rate, attack: growl * 0.4, release: growl
+end
+
+define :in_ha_shout do |pitch|
+  rate = 1 + (pitch * 0.1);
+  sample s_kshout, start: 0.7, release: 1, rate: rate
+end
+
+define :in_random_woosh do
   sample s_bamboowoosh, rate: rrand(0.5, 2)
 end
 
-define :bamchimes do
+define :in_bamchimes do
   sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 2
 end
 
-define :random_word do |bgn, length|
+define :in_random_word do |bgn, length|
   fnh = bgn + length * 0.001
   sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
 end
 
+define :in_hey_short do
+  sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
+end
+
+define :in_ghongh do
+  with_fx :reverb, room: 0.8 do
+    sample s_gongwarm
+  end
+end
 
 # Substractive Sound (use filters to create interesting sounds out of the)
 
 
 # Additive Sound (Use synths that overlap to produce interesting flute like sound)
-define :synth_flute do |n, su, a|
+define :in_flute do |n, su, a|
   attack = 0.15
   s = su - attack - 0.2
   if s < 0
@@ -125,7 +156,7 @@ define :synth_flute do |n, su, a|
       control main, note: n, note_slide: period
       control h2, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
       control h3, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
-      sleep 0.1
+      sleep 0.05
     end
   end
 end
@@ -147,36 +178,60 @@ define :eq6 do |s, v1, v2, v3, v4, v5, v6|
   end
 end
 
-define :sample_test do
-  synth_flute :C5, 3, 0.5
-  sleep 3
-end
-
 #TODO: Create interesting motifs with variable opts and good variations
 
-## motifs --> Harmonized and Rhythmical, variation through randomness, they musn't change too much in Rhythm!
-# change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion
+# ---------------------------------------------
+# MOTIFS
+# --> Harmonized and Rhythmical, variation through randomnes! And some control over parameters.
+# change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
+# ---------------------------------------------
 
-define :flute_motif do
-  tonic = choose([:c4, :a4])
+define :mo_flute do |t|
+  tonic = t
   4.times do
-    dur = choose([0.150, 0.250, 0.5, 1])
+    dur = [0.150, 0.250, 0.5, 1].choose
     synth_flute scale(tonic, :yu).choose, dur, 0.5
     sleep dur * 1.4
   end
 end
 
-define :hey_short do
-  sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
-end
-
-define :ghongh do
-  with_fx :reverb, room: 0.8 do
-    sample s_gongwarm
+define :mo_beast_awakenes do
+  with_fx :reverb do
+    in_beast -8, 2
   end
 end
 
-define :panshout do
+define :mo_fighting_the_beast do
+  in_ha_shout -8
+end
+
+define :mo_chion do 
+  3.times do
+    dur = rrand(0.01, 0.02)
+    chion_part dur, rrand(0.2, 0.4)
+    sleep dur * sample_duration(s_chion) * 1.05
+  end
+end
+
+define :mo_flute_calm do |t|
+  tonic = t
+  synth_flute scale(tonic, :yu).choose, 2, 0.1
+  sleep 0.5
+  3.times do
+    dur = [0.05, 0.1].choose
+    synth_flute scale(tonic, :yu).choose, dur, rrand(0.05, 0.1)
+    sleep dur * 3
+  end
+end
+  
+define :mo_double_woosh do
+  2.times do
+    in_random_woosh
+    sleep [0.25, 0,5, 1].choose
+  end
+end
+
+define :mo_panshout do
   with_fx :reverb, room: rrand(0, 1) do
     shout = sample s_kshout, pan: -1, pan_slide: 1
     sleep 0.2
@@ -184,7 +239,7 @@ define :panshout do
   end
 end
 
-define :katana_combat do
+define :mo_katana_combat do
   sample s_katana, rate: 1.0
   sleep [0.125, 0.5, 1].choose
   sample s_katana, rate: 0.6
@@ -194,24 +249,48 @@ define :katana_combat do
   sample s_katana, rate: 1.0
 end
 
-#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
-# phrases --> repetition and variation, has a definite rhythm, punctuation, 4 bars.
-
-define :combat1 do
-    hey_short
-    sleep [1, 2].choose
-    hey_short
-    sleep [0.5, 1].choose
-    katana_combat
-    if one_in(4)
-      panshout
-    end
+define :mo_strong_river do
+  sample s_stream, amp: 0.5, rate: 2, release: 1
 end
 
-#TODO: Create dramaturgy, so it sounds complete
-# passages --> how phrases are organized in musical structure
+define :mo_drumbeats do
+  in_short_drum
+  sleep 1
+  in_short_drum
+  sleep 1
+  in_short_drum
+  sleep 1
+  in_short_drum
+end
 
-define :atmo1 do
+define :mo_bamboo_decoration do
+  st = rrand(0, 1);
+  bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: st, finish: st + 0.3, pan: 0, pan_slide: 0.2, attack: 2, release: 3
+  sleep 2
+  control bamboo, pan: [-1, -0.6, -0.2].tick
+  sleep 2
+  control bamboo, pan: [1, 0.6, 0.2].tick
+end
+
+#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
+# -------------------------------
+# PHRASES
+# --> repetition and variation of motifs, has a definite rhythm, punctuation and cadence, 4 bars.
+# -------------------------------
+
+define :ph_flute_calm1 do
+  # --- Foreground
+  3.times do
+    flute_calm1 :c4
+    sleep 3
+  end
+  flute_calm1 [:c4, :g4].choose
+  # --- Background
+end
+
+define :ph_atmo_1 do
+  # --- Foreground
+  # --- Background
   with_fx :reverb, room: 0.7 do
     sample s_wind
     if one_in(4)
@@ -225,73 +304,150 @@ define :atmo1 do
   end
 end
 
-define :sample_preview do
-  current_sample = s_stream
-  sd = sample_duration(current_sample);
-  print sd
-    sample current_sample, amp: 2
-  sleep sd
+define :ph_bamboo_game do
+  # --- Foreground
+  in_thread do
+    4.times do
+      mo_double_woosh
+      sleep 0.5
+    end
+  end  
+  # --- Background
+  in_thread do
+    2.times do
+      mo_bamboo_decoration
+      sleep 2
+    end
+  end
 end
 
-define :combat_sequence1 do
-  rrand_i(3,9).times do
-    combat1
+
+define :ph_peaceful_atmo do |flute, chion|
+  # --- Background
+  in_thread do
+    sample s_wind, finish: 0.6, amp: 0.3
+    sample s_stream, amp: 0.2
+    sample s_birds
+    sample s_bamboogmni, finish: 0.55
   end
+  # --- Foreground
+  if flute
+    sleep 4
+    in_thread(name: :s1flute) do
+      sleep 1 
+      mo_flute_calm1 :c4
+      sleep 4
+      ph_flute_calm1
+    end
+  end
+  if chion
+    sleep 8
+    in_thread(name: :s1chion) do
+      mo_chion
+    end
+  end
+end
+
+define :ph_light_combat do
+  # --- Foreground
+  in_thread do
+    4.times do
+      mo_katana_combat
+      sleep 2
+    end
+  end
+  # --- Background
+  in_thread do
+    mo_strong_river
+    if one_in(2)
+      in_wind_sweep
+    else
+      sample s_wind, finish: 0.2, release: 2
+    end
+  end
+end
+
+define :ph_ceremony do
+  # --- Foreground
+  # --- Background
+end
+
+#TODO: Create dramaturgy, so it sounds complete
+# --------------------------------
+# PASSAGES
+# --> how phrases are organized in independent and finished musical ideas. Like scenes in a movie
+# period (antecedent and consequent) or sentence (four phrases developing to one cadence)
+# --------------------------------
+
+define :se_peaceful_temple do
+  ph_peaceful_atmo false, false
+  sleep 12
+  ph_peaceful_atmo true, true
+end
+
+define :se_picking_up_the_pace do
+  in_ghongh
   sleep 1
-end
-
-define :bamboo_decoration do
-  if one_in(3)
-    bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: rrand(0, 0.5), finish: rrand(0.5, 1), pan: 0, pan_slide: 0.2, attack: 2, release: 3
-    sleep 2
-    control bamboo, pan: [-1, -0.6, -0.2].tick
-    sleep 2
-    control bamboo, pan: [1, 0.6, 0.2].tick
-  end
-end
-
-define :peaceful_temple do
-  group_hey
-end
-
-define :picking_up_the_pace do
+  mo_panshout
+  sleep 1
+  ph_bamboo_game
 
 end
 
-define :passage_to_night do
+define :se_passage_to_night do
 
 end
 
-define :demonic_ritual do
+define :se_demonic_ritual do
 
 end
 
-define :passage_to_morning do
+define :se_passage_to_morning do
 
 end
 
-define :back_to_peace do
+define :se_back_to_peace do
 
 end
 
 
-#TODO: Make an intro, 3 random (for development) and a final passage.
-# loops --> succession of different passages
+# -------------------------------------------------------
+# MAIN PIECE
+# --> succession of different passages
+# -------------------------------------------------------
 
 define :winds_of_kyoto do
 
-  peaceful_temple
-  sleep 30
-  picking_up_the_pace
+  se_peaceful_temple
+  sleep 28
+  se_picking_up_the_pace
   sleep 45
-  passage_to_night
+  se_passage_to_night
   sleep 15
-  demonic_ritual
+  se_demonic_ritual
   sleep 45
-  passage_to_morning
+  se_passage_to_morning
   sleep 15
-  back_to_peace
+  se_back_to_peace
 
 end
 
-winds_of_kyoto
+# ------------------
+# PLAY PIECE  
+# ------------------
+
+# BPM: 60 (60 Beats is one Minute)
+
+in_thread(name: :metronome) do
+  loop do
+    sample :drum_bass_hard, amp: 0.05
+    sleep 1
+  end
+end
+
+#winds_of_kyoto
+loop do
+  mo_beast_awakenes
+  
+end
+
