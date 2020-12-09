@@ -37,11 +37,11 @@ end
 # Instruments and Parametrized Samples. To be used to form the motifs
 # --------------------------------------
 
-define :short_drum do
+define :in_short_drum do
   sample s_gongwarm, finish: 0.12, release: 0.5, rate: 0.8
 end
 
-define :ren_trance do
+define :in_ren_trance do
   sample s_renchant, rate: 0.7, amp: 0.2
   sample s_renchant, rate: 0.8, amp: 0.3
   sample s_renchant, rate: 0.96
@@ -51,14 +51,22 @@ define :ren_trance do
   sample s_renchant, rate: 1.14, amp: 0.4
 end
 
-define :wind_sweep do
+define :in_wind_sweep do
   s = sample s_wind, start: 0, finish: 0.1, amp: 2, rate: 0.5, attack: 0.2, release: 2, pan: -1
   control s, pan: 1, pan_slide: 2
   sleep 2
   control s, pan: -1, pan_slide: 2
 end
 
-define :group_hey do
+define :in_chion_part do |l, a|
+  len = l
+  amp = a
+  rstart = rrand(0, 1 - len)
+  sample s_chion, amp: a, pan: rrand(-1,1), start: rstart, finish: rstart + len, release: 2
+end
+
+
+define :in_group_hey do
   hey_short
   sleep rrand(0, 0.2)
   hey_short
@@ -66,24 +74,24 @@ define :group_hey do
   hey_short
 end
 
-define :random_woosh do
+define :in_random_woosh do
   sample s_bamboowoosh, rate: rrand(0.5, 2)
 end
 
-define :bamchimes do
+define :in_bamchimes do
   sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 2
 end
 
-define :random_word do |bgn, length|
+define :in_random_word do |bgn, length|
   fnh = bgn + length * 0.001
   sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
 end
 
-define :hey_short do
+define :in_hey_short do
   sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
 end
 
-define :ghongh do
+define :in_ghongh do
   with_fx :reverb, room: 0.8 do
     sample s_gongwarm
   end
@@ -93,7 +101,7 @@ end
 
 
 # Additive Sound (Use synths that overlap to produce interesting flute like sound)
-define :synth_flute do |n, su, a|
+define :in_flute do |n, su, a|
   attack = 0.15
   s = su - attack - 0.2
   if s < 0
@@ -139,7 +147,7 @@ define :synth_flute do |n, su, a|
       control main, note: n, note_slide: period
       control h2, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
       control h3, note: hz_to_midi( harmonic(f, 2) ), note_slide: period
-      sleep 0.1
+      sleep 0.05
     end
   end
 end
@@ -161,11 +169,6 @@ define :eq6 do |s, v1, v2, v3, v4, v5, v6|
   end
 end
 
-define :sample_test do
-  synth_flute :C5, 3, 0.5
-  sleep 3
-end
-
 #TODO: Create interesting motifs with variable opts and good variations
 
 # ---------------------------------------------
@@ -174,16 +177,36 @@ end
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
 # ---------------------------------------------
 
-define :flute_motif do
-  tonic = choose([:c4, :a4])
+define :mo_flute_1 do |t|
+  tonic = t
   4.times do
-    dur = choose([0.150, 0.250, 0.5, 1])
+    dur = [0.150, 0.250, 0.5, 1].choose
     synth_flute scale(tonic, :yu).choose, dur, 0.5
     sleep dur * 1.4
   end
 end
 
-define :panshout do
+define :mo_chion_1 do 
+  3.times do
+    dur = rrand(0.01, 0.02)
+    chion_part dur, rrand(0.1, 0.2)
+    sleep dur * sample_duration(s_chion) * 1.05
+  end
+end
+
+define :mo_flute_calm1 do |t|
+  tonic = t
+  synth_flute scale(tonic, :yu).choose, 2, 0.1
+  sleep 0.5
+  3.times do
+    dur = [0.05, 0.1].choose
+    synth_flute scale(tonic, :yu).choose, dur, rrand(0.05, 0.1)
+    sleep dur * 3
+  end
+end
+  
+
+define :mo_panshout do
   with_fx :reverb, room: rrand(0, 1) do
     shout = sample s_kshout, pan: -1, pan_slide: 1
     sleep 0.2
@@ -191,7 +214,7 @@ define :panshout do
   end
 end
 
-define :katana_combat do
+define :mo_katana_combat do
   sample s_katana, rate: 1.0
   sleep [0.125, 0.5, 1].choose
   sample s_katana, rate: 0.6
@@ -201,24 +224,21 @@ define :katana_combat do
   sample s_katana, rate: 1.0
 end
 
-define :combat1 do
-  hey_short
-  sleep [1, 2].choose
-  hey_short
-  sleep [0.5, 1].choose
-  katana_combat
-  if one_in(4)
-    panshout
-  end
-end
-
 #TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
 # -------------------------------
 # PHRASES
 # --> repetition and variation of motifs, has a definite rhythm, punctuation and cadence, 4 bars.
 # -------------------------------
 
-define :atmo1 do
+define :ph_flute_calm1 do
+  3.times do
+    flute_calm1 :c4
+    sleep 3
+  end
+  flute_calm1 [:c4, :g4].choose
+end
+
+define :ph_atmo_1 do
   with_fx :reverb, room: 0.7 do
     sample s_wind
     if one_in(4)
@@ -232,22 +252,7 @@ define :atmo1 do
   end
 end
 
-define :sample_preview do
-  current_sample = s_stream
-  sd = sample_duration(current_sample);
-  print sd
-    sample current_sample, amp: 2
-  sleep sd
-end
-
-define :combat_sequence1 do
-  rrand_i(3,9).times do
-    combat1
-  end
-  sleep 1
-end
-
-define :bamboo_decoration do
+define :ph_bamboo_decoration do
   if one_in(3)
     bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: rrand(0, 0.5), finish: rrand(0.5, 1), pan: 0, pan_slide: 0.2, attack: 2, release: 3
     sleep 2
@@ -257,11 +262,11 @@ define :bamboo_decoration do
   end
 end
 
-define :peaceful_background_1 do
-  sample s_wind
-  sample s_stream
+define :ph_peaceful_background_1 do
+  sample s_wind, finish: 0.6, amp: 0.3
+  sample s_stream, amp: 0.2
   sample s_birds
-  sample s_bamboogmni
+  sample s_bamboogmni, finish: 0.55
 end
 
 #TODO: Create dramaturgy, so it sounds complete
@@ -272,12 +277,30 @@ end
 # --------------------------------
 
 define :peaceful_temple do
-  flute_motif
+  ph_peaceful_background_1
+  sleep 8
+  in_thread(name: :s1flute) do
+    sleep 1 
+    mo_flute_calm1 :c4
+    sleep 4
+    ph_flute_calm1
+    sleep 1
+    ph_flute_calm1
+  end
+  in_thread(name: :s1chion) do
+    sleep 8
+    mo_chion_1
+    sleep 8
+    mo_chion_1
+  end
   sleep 10
+  ph_peaceful_background_1
 end
 
 define :picking_up_the_pace do
-
+  in_ghongh
+  sleep 1
+  mo_panshout
 end
 
 define :passage_to_night do
@@ -305,7 +328,7 @@ end
 define :winds_of_kyoto do
 
   peaceful_temple
-  sleep 30
+  sleep 40
   picking_up_the_pace
   sleep 45
   passage_to_night
@@ -318,4 +341,19 @@ define :winds_of_kyoto do
 
 end
 
+# ------------------
+# PLAY PIECE  
+# ------------------
+
+# BPM: 60 (60 Beats is one Minute)
+
+in_thread(name: :metronome) do
+  loop do
+    sample :drum_bass_hard, amp: 0.05
+    sleep 1
+  end
+end
+
 winds_of_kyoto
+
+
