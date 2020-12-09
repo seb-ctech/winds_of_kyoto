@@ -22,6 +22,8 @@ s_birds = path_to_sounds + "bird-chirping-in-Japan.wav" #rate 0.2 to 2 makes for
 
 kyoto_samples = [s_kshout, s_bamboowoosh, s_bamboogmni, s_bamboochimes, s_gongwarm, s_chion, s_wind, s_katana]
 
+# Helper Functions
+
 define :harmonic do |bf, n|
   return bf * n
 end
@@ -29,9 +31,12 @@ end
 define :octave do |m| 
   return 12 * m
 end
-# Instruments and Parametrized Samples. To be used to form the motifs
 
-# Samples
+# --------------------------------------
+# INSTRUMENTS
+# Instruments and Parametrized Samples. To be used to form the motifs
+# --------------------------------------
+
 define :short_drum do
   sample s_gongwarm, finish: 0.12, release: 0.5, rate: 0.8
 end
@@ -74,6 +79,15 @@ define :random_word do |bgn, length|
   sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
 end
 
+define :hey_short do
+  sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
+end
+
+define :ghongh do
+  with_fx :reverb, room: 0.8 do
+    sample s_gongwarm
+  end
+end
 
 # Substractive Sound (use filters to create interesting sounds out of the)
 
@@ -154,8 +168,11 @@ end
 
 #TODO: Create interesting motifs with variable opts and good variations
 
-## motifs --> Harmonized and Rhythmical, variation through randomness, they musn't change too much in Rhythm!
-# change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion
+# ---------------------------------------------
+# MOTIFS
+# --> Harmonized and Rhythmical, variation through randomnes! And some control over parameters.
+# change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
+# ---------------------------------------------
 
 define :flute_motif do
   tonic = choose([:c4, :a4])
@@ -163,16 +180,6 @@ define :flute_motif do
     dur = choose([0.150, 0.250, 0.5, 1])
     synth_flute scale(tonic, :yu).choose, dur, 0.5
     sleep dur * 1.4
-  end
-end
-
-define :hey_short do
-  sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
-end
-
-define :ghongh do
-  with_fx :reverb, room: 0.8 do
-    sample s_gongwarm
   end
 end
 
@@ -194,22 +201,22 @@ define :katana_combat do
   sample s_katana, rate: 1.0
 end
 
-#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
-# phrases --> repetition and variation, has a definite rhythm, punctuation, 4 bars.
-
 define :combat1 do
-    hey_short
-    sleep [1, 2].choose
-    hey_short
-    sleep [0.5, 1].choose
-    katana_combat
-    if one_in(4)
-      panshout
-    end
+  hey_short
+  sleep [1, 2].choose
+  hey_short
+  sleep [0.5, 1].choose
+  katana_combat
+  if one_in(4)
+    panshout
+  end
 end
 
-#TODO: Create dramaturgy, so it sounds complete
-# passages --> how phrases are organized in musical structure
+#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
+# -------------------------------
+# PHRASES
+# --> repetition and variation of motifs, has a definite rhythm, punctuation and cadence, 4 bars.
+# -------------------------------
 
 define :atmo1 do
   with_fx :reverb, room: 0.7 do
@@ -250,8 +257,23 @@ define :bamboo_decoration do
   end
 end
 
+define :peaceful_background_1 do
+  sample s_wind
+  sample s_stream
+  sample s_birds
+  sample s_bamboogmni
+end
+
+#TODO: Create dramaturgy, so it sounds complete
+# --------------------------------
+# PASSAGES
+# --> how phrases are organized in independent and finished musical ideas. Like scenes in a movie
+# period (antecedent and consequent) or sentence (four phrases developing to one cadence)
+# --------------------------------
+
 define :peaceful_temple do
-  group_hey
+  flute_motif
+  sleep 10
 end
 
 define :picking_up_the_pace do
@@ -275,8 +297,10 @@ define :back_to_peace do
 end
 
 
-#TODO: Make an intro, 3 random (for development) and a final passage.
-# loops --> succession of different passages
+# -------------------------------------------------------
+# MAIN PIECE
+# --> succession of different passages
+# -------------------------------------------------------
 
 define :winds_of_kyoto do
 
