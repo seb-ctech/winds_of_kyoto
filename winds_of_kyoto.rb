@@ -65,13 +65,22 @@ define :in_chion_part do |l, a|
   sample s_chion, amp: a, pan: rrand(-1,1), start: rstart, finish: rstart + len, release: 2
 end
 
-
 define :in_group_hey do
   hey_short
-  sleep rrand(0, 0.2)
+  sleep rrand(0, 0.1)
   hey_short
-  sleep rrand(0, 0.2)
+  sleep rrand(0, 0.1)
   hey_short
+end
+
+define :in_beast do  |pitch, growl|
+  rate = 0.1 + (pitch * 0.02)
+  sample s_kshout, start: 0.7, release: 1, rate: rate, attack: growl * 0.4, release: growl
+end
+
+define :in_ha_shout do |pitch|
+  rate = 1 + (pitch * 0.1);
+  sample s_kshout, start: 0.7, release: 1, rate: rate
 end
 
 define :in_random_woosh do
@@ -177,7 +186,7 @@ end
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
 # ---------------------------------------------
 
-define :mo_flute_1 do |t|
+define :mo_flute do |t|
   tonic = t
   4.times do
     dur = [0.150, 0.250, 0.5, 1].choose
@@ -186,7 +195,17 @@ define :mo_flute_1 do |t|
   end
 end
 
-define :mo_chion_1 do 
+define :mo_beast_awakenes do
+  with_fx :reverb do
+    in_beast -8, 2
+  end
+end
+
+define :mo_fighting_the_beast do
+  in_ha_shout -8
+end
+
+define :mo_chion do 
   3.times do
     dur = rrand(0.01, 0.02)
     chion_part dur, rrand(0.2, 0.4)
@@ -194,7 +213,7 @@ define :mo_chion_1 do
   end
 end
 
-define :mo_flute_calm1 do |t|
+define :mo_flute_calm do |t|
   tonic = t
   synth_flute scale(tonic, :yu).choose, 2, 0.1
   sleep 0.5
@@ -234,7 +253,7 @@ define :mo_strong_river do
   sample s_stream, amp: 0.5, rate: 2, release: 1
 end
 
-define :mo_4_drumbeats do
+define :mo_drumbeats do
   in_short_drum
   sleep 1
   in_short_drum
@@ -290,6 +309,7 @@ define :ph_bamboo_game do
   in_thread do
     4.times do
       mo_double_woosh
+      sleep 0.5
     end
   end  
   # --- Background
@@ -323,7 +343,7 @@ define :ph_peaceful_atmo do |flute, chion|
   if chion
     sleep 8
     in_thread(name: :s1chion) do
-      mo_chion_1
+      mo_chion
     end
   end
 end
@@ -426,5 +446,8 @@ in_thread(name: :metronome) do
 end
 
 #winds_of_kyoto
-se_peaceful_temple
+loop do
+  mo_beast_awakenes
+  
+end
 
