@@ -1,7 +1,7 @@
 # Winds of Kyoto
 
 # Usage: change the root-folder to the path where you stored "Winds_of_Kyoto"
-path_to_sounds = "~/developing/ctech/winds_of_kyoto/samples/"
+path_to_sounds = "D:/4_developing/ctech/audio-graphics-workfolder/02/Winds_of_Kyoto/sonicpi/samples/"
 
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
@@ -38,17 +38,36 @@ end
 # --------------------------------------
 
 define :in_short_drum do
-  sample s_gongwarm, finish: 0.12, release: 0.5, rate: 0.8
+  with_fx :compressor do
+    sample s_gongwarm, start:0.02, finish: 0.1, release: 0.1, attack: 0, sustain: 0.4,  rate: 1
+  end
 end
 
 define :in_ren_trance do
-  sample s_renchant, rate: 0.7, amp: 0.2
-  sample s_renchant, rate: 0.8, amp: 0.3
-  sample s_renchant, rate: 0.96
-  sample s_renchant, rate: 0.98, amp: 0.7
-  sample s_renchant
-  sample s_renchant, rate: 1.12, amp: 0.6
-  sample s_renchant, rate: 1.14, amp: 0.4
+  with_fx :level, amp: 0 do |level|
+    sample s_renchant, rate: 0.7, amp: 0.2
+    sample s_renchant, rate: 0.8, amp: 0.3
+    sample s_renchant, rate: 0.96
+    sample s_renchant, rate: 0.98, amp: 0.7
+    sample s_renchant
+    sample s_renchant, rate: 1.12, amp: 0.6
+    sample s_renchant, rate: 1.14, amp: 0.4
+    control level, amp: 1, amp_slide: 12
+    sleep 10
+    control level, amp: 0.2, amp_slide: 5
+  end
+  
+end
+
+define :in_ren_chore do
+  len = rrand(0.01, 0.02)
+  bgn = rrand(0, 1 - len)
+  fin = bgn + len
+  with_fx :reverb, room: 0.8 do
+    sample s_renchant, start: bgn, finish: fin, release: 2, amp: 0.4
+    sleep 0.1
+    sample s_renchant, rate: 0.9, start: bgn, finish: fin, release: 4, amp: 0.2
+  end
 end
 
 define :in_wind_sweep do
@@ -87,13 +106,27 @@ define :in_random_woosh do
   sample s_bamboowoosh, rate: rrand(0.5, 2)
 end
 
+define :in_woosh do |pitch|
+  rate = 1 + (pitch * 0.2)
+  sample s_bamboowoosh, rate: rate
+end
+
 define :in_bamchimes do
   sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 2
 end
 
-define :in_random_word do |bgn, length|
+define :in_word do |bgn, length|
   fnh = bgn + length * 0.001
   sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
+end
+
+define :in_random_word do
+  with_fx :reverb do
+    len = rrand(0, 10) * 0.001
+    bgn = rrand(len, 1) - len
+    fnh = bgn + len
+    sample s_chion, start: bgn, finish: fnh, attack: 0.1, release: 0.2
+  end
 end
 
 define :in_hey_short do
@@ -191,7 +224,7 @@ define :mo_flute do |t|
   4.times do
     dur = [0.150, 0.250, 0.5, 1].choose
     synth_flute scale(tonic, :yu).choose, dur, 0.5
-    sleep dur * 1.4
+    sleep dur * 0.9
   end
 end
 
@@ -215,12 +248,13 @@ end
 
 define :mo_flute_calm do |t|
   tonic = t
-  synth_flute scale(tonic, :yu).choose, 2, 0.1
-  sleep 0.5
-  3.times do
-    dur = [0.05, 0.1].choose
-    synth_flute scale(tonic, :yu).choose, dur, rrand(0.05, 0.1)
-    sleep dur * 3
+  with_fx :reverb do
+    synth_flute scale(tonic, :yu).choose, 3, 0.1
+    sleep 0.5
+    2.times do
+      synth_flute scale(tonic, :yu).tick, 0.1, rrand(0.05, 0.1)
+      sleep 0.5
+    end
   end
 end
   
@@ -231,11 +265,35 @@ define :mo_double_woosh do
   end
 end
 
+define :mo_training do
+  in_ha_shout -2
+  sleep 1
+  in_ha_shout -1
+  sleep [0.5, 1].tick
+  in_ha_shout rrand_i(-3, 3)
+  if one_in(3)
+    sleep [1, 0.5].choose
+    in_group_hey
+  end
+end
+
 define :mo_panshout do
   with_fx :reverb, room: rrand(0, 1) do
     shout = sample s_kshout, pan: -1, pan_slide: 1
     sleep 0.2
     control shout, pan: 1
+  end
+end
+
+define :mo_creepy_atmo do
+  with_fx :reverb, room: 0.7 do
+    sample s_wind
+    if one_in(4)
+      sample s_birds
+    end
+  end
+  with_fx :echo do
+    sample s_stream
   end
 end
 
@@ -253,14 +311,31 @@ define :mo_strong_river do
   sample s_stream, amp: 0.5, rate: 2, release: 1
 end
 
+define :mo_summoning do
+  in_ren_chore
+  sleep 2
+  in_ren_chore
+  sleep [2, 3, 1.5].choose
+  in_ren_chore
+  sleep [0.5, 1, 2].tick
+  in_ren_chore
+end
+
 define :mo_drumbeats do
-  in_short_drum
-  sleep 1
-  in_short_drum
-  sleep 1
-  in_short_drum
-  sleep 1
-  in_short_drum
+  4.times do
+    in_short_drum
+    in_thread do
+      sleep [0.5, 0.2].choose
+      if one_in(2)
+        in_woosh -5
+      else 
+        in_woosh -5
+        sleep 0.2
+        in_woosh -3
+      end
+    end
+    sleep 1
+  end
 end
 
 define :mo_bamboo_decoration do
@@ -288,39 +363,44 @@ define :ph_flute_calm1 do
   # --- Background
 end
 
-define :ph_atmo_1 do
-  # --- Foreground
-  # --- Background
-  with_fx :reverb, room: 0.7 do
-    sample s_wind
-    if one_in(4)
-      sample s_birds
-    end
-    bamboo_decoration
-  end
-  ghongh
-  with_fx :echo do
-    sample s_stream
-  end
-end
-
 define :ph_bamboo_game do
-  # --- Foreground
+  # --- Background
   in_thread do
     4.times do
-      mo_double_woosh
-      sleep 0.5
+      mo_drumbeats
     end
-  end  
-  # --- Background
+  end
   in_thread do
     2.times do
       mo_bamboo_decoration
       sleep 2
     end
   end
+  in_thread do
+    if one_in(2)
+      in_random_word
+    end
+  end
+  # --- Foreground
+  in_thread do
+    if one_in(3)
+      mo_training
+    end
+  end
+  in_thread do
+    4.times do
+      mo_double_woosh
+      sleep 0.5
+    end
+  end
 end
 
+define :ph_demon_song do
+  in_thread do
+    mo_beast_awakenes
+  end
+
+end
 
 define :ph_peaceful_atmo do |flute, chion|
   # --- Background
@@ -348,7 +428,7 @@ define :ph_peaceful_atmo do |flute, chion|
   end
 end
 
-define :ph_light_combat do
+define :ph_combat do
   # --- Foreground
   in_thread do
     4.times do
@@ -368,8 +448,25 @@ define :ph_light_combat do
 end
 
 define :ph_ceremony do
-  # --- Foreground
   # --- Background
+  in_thread do
+    mo_creepy_atmo
+  end
+  in_thread do
+    mo_strong_river
+  end
+  in_thread do
+    if one_in(3)
+      in_wind_sweep
+    end
+  end
+  # --- Foreground
+  in_thread do
+    mo_chion
+  end
+  in_thread do
+    in_ren_chore
+  end
 end
 
 #TODO: Create dramaturgy, so it sounds complete
@@ -389,9 +486,12 @@ define :se_picking_up_the_pace do
   in_ghongh
   sleep 1
   mo_panshout
-  sleep 1
-  ph_bamboo_game
-
+  sleep 2
+  4.times do
+    ph_bamboo_game
+    sleep 16
+  end
+  in_ghongh
 end
 
 define :se_passage_to_night do
@@ -399,7 +499,7 @@ define :se_passage_to_night do
 end
 
 define :se_demonic_ritual do
-
+  in_ren_trance
 end
 
 define :se_passage_to_morning do
@@ -447,7 +547,7 @@ end
 
 #winds_of_kyoto
 loop do
-  mo_beast_awakenes
-  
+  in_ren_trance
+  sleep 100
 end
 
