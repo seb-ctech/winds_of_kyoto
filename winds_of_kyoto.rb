@@ -445,29 +445,29 @@ end
 
 define :ph_bamboo_game do
   # --- Background
-  in_thread do
+  in_thread(name: :ph1_1) do
     4.times do
       mo_drumbeats
     end
   end
-  in_thread do
+  in_thread(name: :ph1_2) do
     2.times do
       mo_bamboo_decoration
       sleep 2
     end
   end
-  in_thread do
+  in_thread(name: :ph1_3) do
     if one_in(2)
       in_random_word
     end
   end
   # --- Foreground
-  in_thread do
+  in_thread(name: :ph1_4) do
     if one_in(3)
       mo_training
     end
   end
-  in_thread do
+  in_thread(name: :ph1_5) do
     4.times do
       mo_double_woosh
       sleep 0.5
@@ -477,39 +477,39 @@ end
 
 define :ph_demon_song do
   # --- Background
-  in_thread do
+  in_thread(name: :ph2_1) do
     2.times do
       mo_beast_awakenes
       sleep 8
     end
   end
-  in_thread(name: :creepyflute) do
+  in_thread(name: :ph2_2) do
     4.times do
       mo_creepy_flute
       sleep 2
     end
   end
-  in_thread do
+  in_thread(name: :ph2_3) do
     2.times do
       sleep 4
       mo_evil_birds
       sleep 2
     end
   end
-  in_thread do
+  in_thread(name: :ph2_4) do
     2.times do
       mo_water_pranks
       sleep 2
     end
   end
   # --- Foreground
-  in_thread do
+  in_thread(name: :ph2_5) do
     4.times do
       mo_chimes
       sleep 4
     end
   end
-  in_thread do
+  in_thread(name: :ph2_6) do
     4.times do
       in_ren_chore 
       sleep 4
@@ -519,7 +519,7 @@ end
 
 define :ph_peaceful_atmo do |flute = false, chion = false|
   # --- Background
-  in_thread do
+  in_thread(name: :ph3_1) do
     sample s_wind, finish: 0.6, amp: 0.3
     sample s_stream, amp: 0.2
     sample s_birds
@@ -528,7 +528,7 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
   # --- Foreground
   if flute
     sleep 4
-    in_thread(name: :s1flute) do
+    in_thread(name: :ph3_2) do
       sleep 1 
       mo_flute_calm :c4
       sleep 4
@@ -537,7 +537,7 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
   end
   if chion
     sleep 8
-    in_thread(name: :s1chion) do
+    in_thread(name: :ph3_3) do
       mo_chion
     end
   end
@@ -545,7 +545,7 @@ end
 
 define :ph_combat do
   # --- Background
-  in_thread do
+  in_thread(name: :ph4_1) do
     mo_strong_river
     if one_in(2)
       in_wind_sweep
@@ -553,7 +553,7 @@ define :ph_combat do
       sample s_wind, finish: 0.2, release: 2
     end
   end
-  in_thread do
+  in_thread(name: :ph4_2) do
     if one_in(2)
       2.times do
         mo_drumbeats
@@ -561,7 +561,7 @@ define :ph_combat do
     end
   end
   # --- Foreground
-  in_thread do
+  in_thread(name: :ph4_3) do
     4.times do
       if one_in(2)
         mo_katana_combat
@@ -571,7 +571,7 @@ define :ph_combat do
       sleep 2
     end
   end
-  in_thread do
+  in_thread(name: :ph4_4) do
     4.times do
       if one_in(2)
         in_group_hey
@@ -582,7 +582,7 @@ define :ph_combat do
       end
     end
   end
-  in_thread do
+  in_thread(name: :ph4_5) do
     4.times do
       if one_in(3)
         mo_slasher
@@ -593,22 +593,22 @@ end
 
 define :ph_ceremony do
   # --- Background
-  in_thread do
+  in_thread(name: :ph5_1) do
     mo_creepy_atmo
   end
-  in_thread do
+  in_thread(name: :ph5_2) do
     mo_strong_river
   end
-  in_thread do
+  in_thread(name: :ph5_3) do
     if one_in(3)
       in_wind_sweep
     end
   end
   # --- Foreground
-  in_thread do
+  in_thread(name: :ph5_4) do
     mo_chion
   end
-  in_thread do
+  in_thread(name: :ph5_5) do
     in_ren_chore
   end
 end
