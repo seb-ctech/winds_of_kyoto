@@ -262,7 +262,7 @@ end
 define :mo_chion do 
   3.times do
     dur = rrand(0.01, 0.02)
-    chion_part dur, rrand(0.2, 0.4)
+    in_chion_part dur, rrand(0.2, 0.4)
     sleep dur * sample_duration(s_chion) * 1.05
   end
 end
@@ -270,10 +270,10 @@ end
 define :mo_flute_calm do |t|
   tonic = t
   with_fx :reverb do
-    synth_flute scale(tonic, :yu).choose, 3, 0.1
+    in_flute scale(tonic, :yu).choose, 3, 0.1
     sleep 0.5
     2.times do
-      synth_flute scale(tonic, :yu).tick, 0.1, rrand(0.05, 0.1)
+      in_flute scale(tonic, :yu).tick, 0.1, rrand(0.05, 0.1)
       sleep 0.5
     end
   end
@@ -443,16 +443,6 @@ end
 # --> repetition and variation of motifs, has a definite rhythm, punctuation and cadence, 4 bars.
 # -------------------------------
 
-define :ph_flute_calm1 do
-  # --- Foreground
-  3.times do
-    flute_calm1 :c4
-    sleep 3
-  end
-  flute_calm1 [:c4, :g4].choose
-  # --- Background
-end
-
 define :ph_bamboo_game do
   # --- Background
   in_thread do
@@ -493,7 +483,7 @@ define :ph_demon_song do
       sleep 8
     end
   end
-  in_thread do
+  in_thread(name: :creepyflute) do
     4.times do
       mo_creepy_flute
       sleep 2
@@ -527,7 +517,7 @@ define :ph_demon_song do
   end
 end
 
-define :ph_peaceful_atmo do |flute, chion|
+define :ph_peaceful_atmo do |flute = false, chion = false|
   # --- Background
   in_thread do
     sample s_wind, finish: 0.6, amp: 0.3
@@ -540,9 +530,9 @@ define :ph_peaceful_atmo do |flute, chion|
     sleep 4
     in_thread(name: :s1flute) do
       sleep 1 
-      mo_flute_calm1 :c4
+      mo_flute_calm :c4
       sleep 4
-      ph_flute_calm1
+      mo_flute_calm :c4
     end
   end
   if chion
@@ -631,9 +621,11 @@ end
 # --------------------------------
 
 define :se_peaceful_temple do
-  ph_peaceful_atmo false, false
+  ph_peaceful_atmo 
   sleep 12
   ph_peaceful_atmo true, true
+  sleep 12
+  ph_peaceful_atmo false, true
 end
 
 define :se_picking_up_the_pace do
@@ -649,11 +641,22 @@ define :se_picking_up_the_pace do
 end
 
 define :se_passage_to_night do
-
+  2.times do 
+    ph_ceremony
+  end
 end
 
 define :se_demonic_ritual do
-  in_ren_trance
+  mo_beast_awakenes
+  sleep 10
+  2.times do
+    ph_demon_song
+    sleep 20
+  end
+  2.times do
+    ph_combat
+    sleep 20
+  end
 end
 
 define :se_passage_to_morning do
@@ -673,9 +676,9 @@ end
 define :winds_of_kyoto do
 
   se_peaceful_temple
-  sleep 28
+  sleep 5
   se_picking_up_the_pace
-  sleep 45
+  sleep 5
   se_passage_to_night
   sleep 15
   se_demonic_ritual
@@ -702,6 +705,6 @@ end
 # winds_of_kyoto
 
 loop do
-  ph_combat
-  sleep 4
+  se_demonic_ritual
+  sleep 2
 end
