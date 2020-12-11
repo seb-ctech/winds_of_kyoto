@@ -388,8 +388,9 @@ define :mo_creepy_flute do
 end
 
 define :mo_bamboo_decoration do
-  st = rrand(0, 1);
-  bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: st, finish: st + 0.3, pan: 0, pan_slide: 0.2, attack: 2, release: 3
+  len = 0.3
+  st = rrand(0, 1 - len);
+  bamboo = sample choose([s_bamboogmni, s_bamboochimes]), start: st, finish: st + len, pan: 0, pan_slide: 0.2, attack: 2, release: 3
   sleep 2
   control bamboo, pan: [-1, -0.6, -0.2].tick
   sleep 2
@@ -684,19 +685,16 @@ end
 
 # BPM: 60 (60 Beats is one Minute)
 
-#in_thread(name: :metronome) do
-#  loop do
-#    sample :drum_bass_hard, amp: 0.05
-#    sleep 1
-#  end
-#end
+in_thread(name: :metronome) do
+  loop do
+    sample :drum_bass_hard, amp: 0.05
+    sleep 1
+  end
+end
 
-#winds_of_kyoto
-play 60
+# winds_of_kyoto
 
 loop do
   se_picking_up_the_pace
   sleep 40
 end
-
-
