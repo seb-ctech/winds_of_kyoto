@@ -1,6 +1,6 @@
 # Winds of Kyoto
 
-# Usage: change the root-folder to the path where you stored "Winds_of_Kyoto"
+# Usage: change to the $root-folder where you stored "Winds_of_Kyoto" + "samples/"
 path_to_sounds = "D:/4_developing/ctech/audio-graphics-workfolder/02/Winds_of_Kyoto/sonicpi/samples/"
 
 #percussive
@@ -408,15 +408,15 @@ define :mo_evil_birds do
 end
 
 define :mo_slasher do
-  in_katana -5
+  in_katana -8
   sleep 1 
-  in_katana -3
+  in_katana -6
   sleep 0.5
-  in_katana -1
+  in_katana -2
   sleep 0.3
   in_katana 0
   sleep 0.8
-  in_katana -3
+  in_katana -6
 end
 
 define :mo_chimes do
@@ -592,6 +592,13 @@ define :ph_combat do
       end
     end
   end
+  in_thread do
+    4.times do
+      if one_in(3)
+        mo_slasher
+      end
+    end
+  end
 end
 
 define :ph_ceremony do
@@ -695,6 +702,6 @@ end
 # winds_of_kyoto
 
 loop do
-  se_picking_up_the_pace
-  sleep 40
+  ph_combat
+  sleep 4
 end
