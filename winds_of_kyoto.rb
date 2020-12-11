@@ -43,20 +43,40 @@ define :in_short_drum do
   end
 end
 
-define :in_ren_trance do
+define :in_ren_trance do |n|
   with_fx :level, amp: 0 do |level|
-    sample s_renchant, rate: 0.7, amp: 0.2
-    sample s_renchant, rate: 0.8, amp: 0.3
-    sample s_renchant, rate: 0.96
-    sample s_renchant, rate: 0.98, amp: 0.7
-    sample s_renchant
-    sample s_renchant, rate: 1.12, amp: 0.6
-    sample s_renchant, rate: 1.14, amp: 0.4
-    control level, amp: 1, amp_slide: 12
+    dur = 0.2
+    sample s_renchant, finish: dur, release: 3
+    if n >= 1
+      sample s_renchant, rate: 0.7, amp: 0.2, finish: dur, release: 3
+      if n >= 2
+        sample s_renchant, rate: 0.8, amp: 0.3, finish: dur, release: 3
+        if n >= 3
+          sample s_renchant, rate: 0.96, finish: dur, release: 3
+          if n >= 4
+            sample s_renchant, rate: 0.98, amp: 0.7, finish: dur, release: 3
+            if n >= 5
+              sample s_renchant, rate: 1.12, amp: 0.6, finish: dur, release: 3
+              if n >= 6
+                sample s_renchant, rate: 1.14, amp: 0.4, finish: dur, release: 3
+              end
+            end
+          end
+        end
+      end
+    end
+    control level, amp: 1, amp_slide: 12, finish: dur
     sleep 10
-    control level, amp: 0.2, amp_slide: 5
+    control level, amp: 0.2, amp_slide: 5, finish: dur
   end
-  
+end
+
+define :in_birds do |seed, pitch|
+  rate = 1 + pitch * 0.1
+  len = 0.07
+  srt = seed * 0.001
+  fsh = srt + len
+  sample s_birds, amp: 0.3, start: srt, finish: fsh, rate: rate, release: 0.5
 end
 
 define :in_ren_chore do
@@ -77,6 +97,11 @@ define :in_wind_sweep do
   control s, pan: -1, pan_slide: 2
 end
 
+define :in_water_flow do |dir, mul|
+  rate = mul * 0.1 * dir
+  sample s_stream, rate: rate, finish: 0.15, release: 1, amp: 0.3
+end
+
 define :in_chion_part do |l, a|
   len = l
   amp = a
@@ -85,11 +110,11 @@ define :in_chion_part do |l, a|
 end
 
 define :in_group_hey do
-  hey_short
+  in_hey_short
   sleep rrand(0, 0.1)
-  hey_short
+  in_hey_short
   sleep rrand(0, 0.1)
-  hey_short
+  in_hey_short
 end
 
 define :in_beast do  |pitch, growl|
@@ -112,7 +137,7 @@ define :in_woosh do |pitch|
 end
 
 define :in_bamchimes do
-  sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 2
+  sample s_bamboochimes, finish: 0.05, rate: 0.8, amp: 0.6
 end
 
 define :in_word do |bgn, length|
@@ -137,6 +162,11 @@ define :in_ghongh do
   with_fx :reverb, room: 0.8 do
     sample s_gongwarm
   end
+end
+
+define :in_katana do |pitch|
+  rate = 1 + pitch * 0.1
+  sample s_katana, rate: rate, amp: 0.6
 end
 
 # Substractive Sound (use filters to create interesting sounds out of the)
@@ -219,15 +249,6 @@ end
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
 # ---------------------------------------------
 
-define :mo_flute do |t|
-  tonic = t
-  4.times do
-    dur = [0.150, 0.250, 0.5, 1].choose
-    synth_flute scale(tonic, :yu).choose, dur, 0.5
-    sleep dur * 0.9
-  end
-end
-
 define :mo_beast_awakenes do
   with_fx :reverb do
     in_beast -8, 2
@@ -297,6 +318,18 @@ define :mo_creepy_atmo do
   end
 end
 
+define :mo_water_pranks do
+  in_water_flow 1, 10
+  sleep 1
+  in_water_flow 1, 15
+  sleep 0.5
+  in_water_flow 1, 3
+  sleep 1
+  in_water_flow -1, 5
+  sleep 2
+  in_water_flow -1, 2
+end
+
 define :mo_katana_combat do
   sample s_katana, rate: 1.0
   sleep [0.125, 0.5, 1].choose
@@ -321,20 +354,36 @@ define :mo_summoning do
   in_ren_chore
 end
 
-define :mo_drumbeats do
+define :mo_drumbeats do |intense=false|
   4.times do
     in_short_drum
     in_thread do
       sleep [0.5, 0.2].choose
       if one_in(2)
-        in_woosh -5
-      else 
-        in_woosh -5
+        if intense
+          in_woosh -3
+        end
+      else
+        if intense
+          in_woosh -3
+        end
         sleep 0.2
         in_woosh -3
       end
     end
     sleep 1
+  end
+end
+
+define :mo_creepy_flute do
+  with_fx :reverb, room: 0.9 do
+    in_flute :a3, 2, 0.2
+    sleep 1
+    in_flute :g3, 0.5, 0.1
+    sleep 1
+    in_flute :f3, 0.25, 0.2
+    sleep 1
+    in_flute :fs3, 2, 0.2
   end
 end
 
@@ -345,6 +394,46 @@ define :mo_bamboo_decoration do
   control bamboo, pan: [-1, -0.6, -0.2].tick
   sleep 2
   control bamboo, pan: [1, 0.6, 0.2].tick
+end
+
+define :mo_evil_birds do
+  with_fx :echo do
+    in_birds 432, -2
+    sleep 2
+    in_birds 65, -9
+    sleep 2
+    in_birds 675, -8
+  end
+end
+
+define :mo_slasher do
+  in_katana -5
+  sleep 1 
+  in_katana -3
+  sleep 0.5
+  in_katana -1
+  sleep 0.3
+  in_katana 0
+  sleep 0.8
+  in_katana -3
+end
+
+define :mo_chimes do
+  in_bamchimes
+  sleep 2
+  in_bamchimes
+end
+
+define :mo_shouts do
+  in_ha_shout -2
+  sleep 0.5
+  in_beast 4, 2
+  sleep 2
+  in_beast 6, 1
+  sleep 1
+  in_ha_shout 0
+  sleep 0.5
+  in_ha_shout 2
 end
 
 #TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
@@ -396,10 +485,45 @@ define :ph_bamboo_game do
 end
 
 define :ph_demon_song do
+  # --- Background
   in_thread do
-    mo_beast_awakenes
+    2.times do
+      mo_beast_awakenes
+      sleep 8
+    end
   end
-
+  in_thread do
+    4.times do
+      mo_creepy_flute
+      sleep 2
+    end
+  end
+  in_thread do
+    2.times do
+      sleep 4
+      mo_evil_birds
+      sleep 2
+    end
+  end
+  in_thread do
+    2.times do
+      mo_water_pranks
+      sleep 2
+    end
+  end
+  # --- Foreground
+  in_thread do
+    4.times do
+      mo_chimes
+      sleep 4
+    end
+  end
+  in_thread do
+    4.times do
+      in_ren_chore 
+      sleep 4
+    end
+  end
 end
 
 define :ph_peaceful_atmo do |flute, chion|
@@ -429,13 +553,6 @@ define :ph_peaceful_atmo do |flute, chion|
 end
 
 define :ph_combat do
-  # --- Foreground
-  in_thread do
-    4.times do
-      mo_katana_combat
-      sleep 2
-    end
-  end
   # --- Background
   in_thread do
     mo_strong_river
@@ -443,6 +560,35 @@ define :ph_combat do
       in_wind_sweep
     else
       sample s_wind, finish: 0.2, release: 2
+    end
+  end
+  in_thread do
+    if one_in(2)
+      2.times do
+        mo_drumbeats
+      end
+    end
+  end
+  # --- Foreground
+  in_thread do
+    4.times do
+      if one_in(2)
+        mo_katana_combat
+      else 
+        mo_double_woosh
+      end
+      sleep 2
+    end
+  end
+  in_thread do
+    4.times do
+      if one_in(2)
+        in_group_hey
+        sleep 4
+      else 
+        mo_shouts
+        sleep 4
+      end
     end
   end
 end
@@ -538,16 +684,19 @@ end
 
 # BPM: 60 (60 Beats is one Minute)
 
-in_thread(name: :metronome) do
-  loop do
-    sample :drum_bass_hard, amp: 0.05
-    sleep 1
-  end
-end
+#in_thread(name: :metronome) do
+#  loop do
+#    sample :drum_bass_hard, amp: 0.05
+#    sleep 1
+#  end
+#end
 
 #winds_of_kyoto
+play 60
+
 loop do
-  in_ren_trance
-  sleep 100
+  se_picking_up_the_pace
+  sleep 40
 end
+
 
