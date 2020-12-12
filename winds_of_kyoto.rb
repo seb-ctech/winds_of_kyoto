@@ -45,4 +45,6 @@ in_thread(name: :metronome) do
   end
 end
 
-winds_of_kyoto
+loop do
+  mo_creepy_atmo
+end

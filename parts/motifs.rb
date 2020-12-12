@@ -66,14 +66,14 @@ end
 define :mo_creepy_atmo do
   with_fx :reverb, room: 0.7 do
     sample s_wind
-    if one_in(4)
-      sample s_birds
+    if one_in(2)
+      sample s_birds, finish: 0.2, release: 1
     end
   end
   with_fx :echo do
-    sample s_stream
+    sample s_stream, finish: 0.6, release: 2
   end
-  sleep 10
+  sleep 16
 end
 
 define :mo_water_pranks do
