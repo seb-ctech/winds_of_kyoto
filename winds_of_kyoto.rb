@@ -532,75 +532,75 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
   end
 end
 
-#define :ph_combat do
-#  # --- Background
-#  in_thread(name: :ph4_1) do
-#    mo_strong_river
-#    if one_in(2)
-#      in_wind_sweep
-#    else
-#      sample s_wind, finish: 0.2, release: 2
-#    end
-#  end
-#  in_thread(name: :ph4_2) do
-#    if one_in(2)
-#      2.times do
-#        mo_drumbeats
-#      end
-#    end
-#  end
-#  # --- Foreground
-#  in_thread(name: :ph4_3) do
-#    4.times do
-#      if one_in(2)
-#        mo_katana_combat
-#      else 
-#        mo_double_woosh
-#      end
-#      sleep 2
-#    end
-#  end
-#  in_thread(name: :ph4_4) do
-#    4.times do
-#      if one_in(2)
-#        in_group_hey
-#        sleep 4
-#      else 
-#        mo_shouts
-#        sleep 4
-#      end
-#    end
-#  end
-#  in_thread(name: :ph4_5) do
-#    4.times do
-#      if one_in(3)
-#        mo_slasher
-#      end
-#    end
-#  end
-#end
-#
-#define :ph_ceremony do
-#  # --- Background
-#  in_thread(name: :ph5_1) do
-#    mo_creepy_atmo
-#  end
-#  in_thread(name: :ph5_2) do
-#    mo_strong_river
-#  end
-#  in_thread(name: :ph5_3) do
-#    if one_in(3)
-#      in_wind_sweep
-#    end
-#  end
-#  # --- Foreground
-#  in_thread(name: :ph5_4) do
-#    mo_chion
-#  end
-#  in_thread(name: :ph5_5) do
-#    in_ren_chore
-#  end
-#end
+define :ph_combat do
+  # --- Background
+  in_thread do
+    mo_strong_river
+    if one_in(2)
+      in_wind_sweep
+    else
+      sample s_wind, finish: 0.2, release: 2
+    end
+  end
+  in_thread do
+    if one_in(2)
+      2.times do
+        mo_drumbeats
+      end
+    end
+  end
+  # --- Foreground
+  in_thread do
+    4.times do
+      if one_in(2)
+        mo_katana_combat
+      else 
+        mo_double_woosh
+      end
+      sleep 2
+    end
+  end
+  in_thread do
+    4.times do
+      if one_in(2)
+        in_group_hey
+        sleep 4
+      else 
+        mo_shouts
+        sleep 4
+      end
+    end
+  end
+  in_thread do
+    4.times do
+      if one_in(3)
+        mo_slasher
+      end
+    end
+  end
+end
+
+define :ph_ceremony do
+  # --- Background
+  in_thread do
+    mo_creepy_atmo
+  end
+  in_thread do
+    mo_strong_river
+  end
+  in_thread do
+    if one_in(3)
+      in_wind_sweep
+    end
+  end
+  # --- Foreground
+  in_thread do
+    mo_chion
+  end
+  in_thread do
+    in_ren_chore
+  end
+end
 
 #TODO: Create dramaturgy, so it sounds complete
 # --------------------------------
