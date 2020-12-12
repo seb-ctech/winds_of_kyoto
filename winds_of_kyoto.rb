@@ -45,6 +45,6 @@ in_thread(name: :metronome) do
   end
 end
 
-loop do
-  mo_creepy_atmo
-end
+se_passage_to_morning
+sleep 1
+se_back_to_peace

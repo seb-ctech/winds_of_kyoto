@@ -10,7 +10,12 @@
 define :mo_beast_awakenes do |pitch = 0, amp = 1|
   with_fx :reverb do
     in_beast -8 + pitch, 2, amp
-    sleep 8 - pitch
+    pause = 8 - pitch
+    if pitch < 0
+      sleep 8
+    else 
+      sleep 8 - pitch + 1
+    end
   end
 end
 

@@ -48,8 +48,7 @@ define :se_peaceful_temple do
   end
   
   define :se_passage_to_morning do
-    mo_beast_awakenes #backwards or higher pitch
-    sleep 3
+    mo_beast_awakenes -4
     in_group_hey
     2.times do
       ph_bamboo_game #somehow changed
@@ -58,10 +57,9 @@ define :se_peaceful_temple do
   
   define :se_back_to_peace do
     ph_peaceful_atmo true, false
-    mo_beast_awakenes #low and different
-    sleep 8
     mo_chion
     sleep 2
+    mo_beast_awakenes 5, 0.6
     ph_peaceful_atmo
     in_ghongh
   end
