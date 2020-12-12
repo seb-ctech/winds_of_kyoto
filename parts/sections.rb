@@ -1,6 +1,6 @@
 #TODO: Create dramaturgy, so it sounds complete
 # --------------------------------
-# PASSAGES
+# SECTIONS
 # --> how phrases are organized in independent and finished musical ideas. Like scenes in a movie
 # period (antecedent and consequent) or sentence (four phrases developing to one cadence)
 # --------------------------------

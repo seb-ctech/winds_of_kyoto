@@ -13,7 +13,7 @@ eval_file root + "parts/sections.rb"
 
 # -------------------------------------------------------
 # MAIN PIECE
-# --> succession of different passages
+# --> succession of different sections
 # -------------------------------------------------------
 
 define :winds_of_kyoto do
