@@ -124,14 +124,13 @@ define :in_birds do |seed, pitch|
   sample s_birds, amp: 0.3, start: srt, finish: fsh, rate: rate, release: 0.5
 end
 
-define :in_ren_chore do
-  len = rrand(0.01, 0.02)
-  bgn = rrand(0, 1 - len)
+define :in_ren_chore do |pitch = 0, amp = 0.4|
+  len = 0.04
+  rate = 1 + 0.1 * pitch
+  bgn = rrand(0.2, 1 - len)
   fin = bgn + len
   with_fx :reverb, room: 0.8 do
-    sample s_renchant, start: bgn, finish: fin, release: 2, amp: 0.4
-    sleep 0.1
-    sample s_renchant, rate: 0.9, start: bgn, finish: fin, release: 4, amp: 0.2
+    sample s_renchant, start: bgn, finish: fin, attack: 0.4, release: 1, amp: amp, rate: rate, pan: rrand(-1, 1)
   end
 end
 
@@ -144,7 +143,7 @@ end
 
 define :in_water_flow do |dir, mul|
   rate = mul * 0.1 * dir
-  sample s_stream, rate: rate, finish: 0.15, release: 1, amp: 0.3
+  sample s_stream, rate: rate, finish: 0.15, release: 1, amp: 0.7
 end
 
 define :in_chion_part do |l, a|
@@ -203,9 +202,9 @@ define :in_hey_short do
   sample s_kshout, start: 0, finish: 0.3, release: 0.2, rate: rrand(0.8, 1.2)
 end
 
-define :in_ghongh do
+define :in_ghongh do |rate = 1|
   with_fx :reverb, room: 0.8 do
-    sample s_gongwarm
+    sample s_gongwarm, rate: rate
   end
 end
 

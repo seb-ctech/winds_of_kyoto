@@ -106,7 +106,8 @@ define :mo_katana_combat do
 end
 
 define :mo_strong_river do
-  sample s_stream, amp: 0.5, rate: 2, release: 1
+  sample s_stream, amp: 1.2, rate: 2, release: 1, finish: 0.4
+  sleep 12
 end
 
 define :mo_summoning do
@@ -143,14 +144,27 @@ end
 
 define :mo_creepy_flute do
   with_fx :reverb, room: 0.9 do
-    in_flute :a3, 2, 0.2
+    in_flute :a4, 2, 0.1
     sleep 1
-    in_flute :g3, 0.5, 0.1
+    in_flute :g4, 0.5, 0.06
     sleep 1
-    in_flute :f3, 0.25, 0.2
+    in_flute :f4, 0.25, 0.1
     sleep 1
-    in_flute :fs3, 2, 0.2
+    in_flute :fs4, 2, 0.04
     sleep 2
+  end
+end
+
+define :mo_ren_chants do
+  3.times do
+    in_ren_chore 0, rrand(0.1, 0.3)
+    if one_in(2)
+      in_ren_chore -2, rrand(0.1, 0.3)
+      if one_in(3)
+        in_ren_chore 2, rrand(0.1, 0.3)
+      end
+    end
+    sleep 4
   end
 end
 
@@ -166,13 +180,32 @@ end
 
 define :mo_evil_birds do
   with_fx :echo do
-    in_birds 432, -2
+    if one_in(2)
+      in_birds 432, -2
+    else 
+      in_birds rrand_i(120, 300), rrand_i(-2, 2)
+    end
     sleep 2
     in_birds 65, -9
     sleep 2
-    in_birds 675, -8
+    in_birds rrand_i(300, 675), rrand_i(-8, -3)
     sleep 2
   end
+end
+
+define :mo_birds_turning do
+  in_birds 260, 0
+  sleep 1
+  in_birds 230, 1
+  sleep [0.5, 1].choose
+  in_birds 120, [-3, 2].choose
+  sleep 1
+  in_birds 678, [3, -5].choose
+  sleep 1
+  in_birds 59, -6
+  sleep 2
+  in_birds 89, -8
+  sleep 2
 end
 
 define :mo_slasher do
