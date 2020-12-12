@@ -19,15 +19,15 @@ eval_file root + "parts/sections.rb"
 define :winds_of_kyoto do
 
   se_peaceful_temple
-  sleep 5
+  sleep 1
   se_picking_up_the_pace
-  sleep 5
+  sleep 1
   se_passage_to_night
-  sleep 15
+  sleep 1
   se_demonic_ritual
-  sleep 45
+  sleep 1
   se_passage_to_morning
-  sleep 15
+  sleep 1
   se_back_to_peace
 
 end
@@ -40,9 +40,9 @@ end
 
 in_thread(name: :metronome) do
   loop do
-    sample :drum_bass_hard, amp: 0.5
+    sample :drum_bass_hard, amp: 0.1
     sleep 1
   end
 end
 
-ph_bamboo_game
+winds_of_kyoto

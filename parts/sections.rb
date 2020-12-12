@@ -20,7 +20,6 @@ define :se_peaceful_temple do
     sleep 2
     4.times do
       ph_bamboo_game
-      sleep
     end
     in_ghongh
   end
@@ -38,19 +37,19 @@ define :se_peaceful_temple do
   
   define :se_demonic_ritual do
     mo_beast_awakenes
-    sleep 10
+    sleep 8
     2.times do
       ph_demon_song
-      sleep 20
     end
+    sleep 2
     2.times do
       ph_combat
-      sleep 20
     end
   end
   
   define :se_passage_to_morning do
     mo_beast_awakenes #backwards or higher pitch
+    sleep 3
     in_group_hey
     2.times do
       ph_bamboo_game #somehow changed
@@ -60,7 +59,9 @@ define :se_peaceful_temple do
   define :se_back_to_peace do
     ph_peaceful_atmo true, false
     mo_beast_awakenes #low and differetent
+    sleep 8
     mo_chion
+    sleep 2
     ph_peaceful_atmo
     in_ghongh
   end
