@@ -643,7 +643,10 @@ end
 define :se_passage_to_night do
   2.times do 
     ph_ceremony
+    sleep 10
   end
+  sleep 1
+  in_ren_trance
 end
 
 define :se_demonic_ritual do
@@ -660,11 +663,19 @@ define :se_demonic_ritual do
 end
 
 define :se_passage_to_morning do
-
+  mo_monster_awakenes #backwards or higher pitch
+  in_group_hey
+  2.times do
+    ph_bamboo_game #somehow changed
+  end
 end
 
 define :se_back_to_peace do
-
+  ph_peaceful_atmo true, false
+  mo_beast_awakenes #low and differetent
+  mo_chion
+  ph_peaceful_atmo
+  in_ghongh
 end
 
 
