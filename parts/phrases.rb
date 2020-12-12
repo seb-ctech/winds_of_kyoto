@@ -38,7 +38,6 @@ define :ph_bamboo_game do
       in_thread do
         2.times do
           mo_creepy_flute
-          sleep 2
         end
       end
     end
@@ -46,31 +45,26 @@ define :ph_bamboo_game do
       2.times do
         sleep 4
         mo_evil_birds
-        sleep 2
       end
     end
     in_thread do
       2.times do
         mo_water_pranks
-        sleep 2
       end
     end
     # --- Foreground
     in_thread do
       4.times do
         mo_chimes
-        sleep 4
       end
     end
     in_thread do
       4.times do
         in_ren_chore 
-        sleep 4
       end
     end
     2.times do
       mo_beast_awakenes
-      sleep 8
     end
   end
   
@@ -80,7 +74,6 @@ define :ph_bamboo_game do
         sleep 1 
         3.times do
           mo_flute_calm :c4
-          sleep 4
         end
         mo_flute_calm :g4
       end
@@ -96,7 +89,7 @@ define :ph_bamboo_game do
     sample s_birds
     sample s_bamboogmni, finish: 0.55
     if one_in(2)
-      sleep 10
+      sleep 8
       in_group_hey
     end
   end
@@ -123,13 +116,12 @@ define :ph_bamboo_game do
           sleep 4
         else 
           mo_shouts
-          sleep 4
         end
       end
     end
     in_thread do
       4.times do
-        if one_in(3)
+        if one_in(2)
           mo_slasher
         end
       end
@@ -140,7 +132,6 @@ define :ph_bamboo_game do
       else 
         mo_double_woosh
       end
-      sleep 1
     end
   end
   
@@ -160,5 +151,4 @@ define :ph_bamboo_game do
       in_ren_chore
     end
     mo_creepy_atmo
-    sleep 10
   end

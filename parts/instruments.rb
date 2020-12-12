@@ -162,9 +162,9 @@ define :in_group_hey do
   in_hey_short
 end
 
-define :in_beast do  |pitch, growl|
+define :in_beast do  |pitch, growl, amp=1|
   rate = 0.1 + (pitch * 0.02)
-  sample s_kshout, start: 0.7, release: 1, rate: rate, attack: growl * 0.4, release: growl
+  sample s_kshout, start: 0.7, release: 1, rate: rate, attack: growl * 0.4, release: growl, amp: amp
 end
 
 define :in_ha_shout do |pitch|

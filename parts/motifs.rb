@@ -4,11 +4,13 @@
 # MOTIFS
 # --> Harmonized and Rhythmical, variation through randomnes! And some control over parameters.
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
+# TODO: Motifs need to incapsulate sleep intervals
 # ---------------------------------------------
 
-define :mo_beast_awakenes do
+define :mo_beast_awakenes do |pitch = 0, amp = 1|
   with_fx :reverb do
-    in_beast -8, 2
+    in_beast -8 + pitch, 2, amp
+    sleep 8 - pitch
   end
 end
 
@@ -30,6 +32,7 @@ define :mo_flute_calm do |t|
       sleep 0.5
     end
   end
+  sleep 2
 end
   
 define :mo_double_woosh do
@@ -37,6 +40,7 @@ define :mo_double_woosh do
     in_random_woosh
     sleep [0.25, 0,5, 1].choose
   end
+  sleep 1
 end
 
 define :mo_training do
@@ -69,6 +73,7 @@ define :mo_creepy_atmo do
   with_fx :echo do
     sample s_stream
   end
+  sleep 10
 end
 
 define :mo_water_pranks do
@@ -81,6 +86,7 @@ define :mo_water_pranks do
   in_water_flow -1, 5
   sleep 2
   in_water_flow -1, 2
+  sleep 1
 end
 
 define :mo_katana_combat do
@@ -91,6 +97,7 @@ define :mo_katana_combat do
   sample s_katana, rate: 1.4
   sleep [0.250, 0.075].choose
   sample s_katana, rate: 1.0
+  sleep 1
 end
 
 define :mo_strong_river do
@@ -105,6 +112,7 @@ define :mo_summoning do
   in_ren_chore
   sleep [0.5, 1, 2].tick
   in_ren_chore
+  sleep 2
 end
 
 define :mo_drumbeats do |intense=false|
@@ -137,6 +145,7 @@ define :mo_creepy_flute do
     in_flute :f3, 0.25, 0.2
     sleep 1
     in_flute :fs3, 2, 0.2
+    sleep 2
   end
 end
 
@@ -157,6 +166,7 @@ define :mo_evil_birds do
     in_birds 65, -9
     sleep 2
     in_birds 675, -8
+    sleep 2
   end
 end
 
@@ -177,6 +187,7 @@ define :mo_chimes do
   in_bamchimes
   sleep 2
   in_bamchimes
+  sleep 2
 end
 
 define :mo_shouts do
@@ -189,4 +200,5 @@ define :mo_shouts do
   in_ha_shout 0
   sleep 0.5
   in_ha_shout 2
+  sleep 2
 end

@@ -58,7 +58,7 @@ define :se_peaceful_temple do
   
   define :se_back_to_peace do
     ph_peaceful_atmo true, false
-    mo_beast_awakenes #low and differetent
+    mo_beast_awakenes #low and different
     sleep 8
     mo_chion
     sleep 2
