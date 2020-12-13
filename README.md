@@ -3,13 +3,13 @@
 This is my "Audio Production" project with the theme of Kyoto. Since my Trip to Japan this year which I was very excited for got chancelled, due to the corona outbreak, I wanted to make an hommage by using samples that represent nature and asian culture, to evoke an image of an idillic Japanese Temple somewhere on the country-side of Kyoto, that turns ritualistic and demonic during the night. The overarching Idea is to use sounds that propagate through the air, like swinging sounds, wind-chimes, chants and wind. 
 Hence the name of the composition: "Winds of Kyoto".
 
-# Concept
+## Concept
 
 With this project I wanted to experiment how to use simple sounds to tell a story while at the same time have a "real" musique concrete composition. The Piece is structured in three acts. First it starts on a simple establisher to set the mood and create a peaceful atmosphere. The first act unfolds with a training unit of a group of monks which is highly percussive and energetic in contrast to the opening.
 After a while we switch the setting and when the sun starts to set, ominous voices announce a dark sect plotting and chanting down the river.
 This leads to the second act: an atmospheric and ominous demon summoning dominated by a dark growl and chants. However the demon is kept on a short leash and immediately attacked by the guarding monks. The third act turns into an exchange of hits between dark sect and monks and results in a victory for good. After a final celebration the temple meadow settles back to peace. Or so it seems...
 
-# Technical Details
+## Technical Details
 
 For the whole piece I used eleven Samples, from which five are solely acustics for the background atmosphere. The other two samples where used to represent the chants of the two parties. Leaving me with four main samples I really "worked with" to create the piece. A highly cheesey karate shout, from which I extracted most shouts and the demon growls by playing with the play rate and cutting it, a bamboo swing, a katana hit and a ghong were used as percussive force.
 Additionally I used additive synthesis to design a flute instrument out of 9 sine-wave synthesizers with a slight tremolo for realistic timbre, inspired by a traditional japanese "shakuhaki".
