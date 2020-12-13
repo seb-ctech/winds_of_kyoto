@@ -45,4 +45,4 @@ in_thread(name: :metronome) do
   end
 end
 
-ph_ceremony
+se_demonic_ritual

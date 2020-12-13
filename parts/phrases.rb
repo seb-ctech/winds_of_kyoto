@@ -32,41 +32,22 @@ define :ph_bamboo_game do
 end
   
 define :ph_demon_song do
-  if one_in(2)
-    in_thread do
-      2.times do
-        mo_creepy_flute
-      end
-    end
-  end
   in_thread do
-    2.times do
-      sleep 4
-      mo_evil_birds
-    end
-  end
-  in_thread do
-    2.times do
+    4.times do
       mo_water_pranks
     end
   end
-  # --- Foreground
   in_thread do
-    4.times do
+    2.times do  
       mo_chimes
     end
+    mo_evil_birds
   end
   in_thread do
-    sleep 3
-    4.times do
-      if one_in(2)
-        mo_ren_chants
-      end
-    end
+    mo_creepy_flute
   end
-  2.times do
-    mo_beast_awakenes
-  end
+  mo_ren_chants
+  mo_beast_awakenes
 end
   
 define :ph_peaceful_atmo do |flute = false, chion = false|
@@ -96,42 +77,29 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
 end
 
 define :ph_combat do
-  # --- Background
   in_thread do
     mo_strong_river
     if one_in(2)
       in_wind_sweep
-    else
-      sample s_wind, finish: 0.2, release: 2
     end
   end
   in_thread do
-    3.times do
-      if one_in(2)
-        mo_ren_chants
-      end
-      sleep 1
-      if one_in(3)
-        in_group_hey
-        sleep 4
-      else 
-        mo_shouts
-      end
-    end
   end
   in_thread do
-    4.times do
+    2.times do
       if one_in(2)
+        in_thread do
+          mo_ren_chants
+        end
         mo_slasher
-      end
-    end
-  end
-  in_thread do
-    4.times do
-      if one_in(2)
+        mo_shouts
+      else
+        in_thread do
+          mo_chion
+        end
+        in_group_hey
         mo_katana_combat
-      else 
-        mo_double_woosh
+        mo_shouts
       end
     end
   end
@@ -142,32 +110,31 @@ end
 
 define :ph_ceremony do
   in_thread do
-    if one_in(3)
-      mo_water_pranks
-    else
-      mo_strong_river
-    end
+    mo_strong_river
+    mo_water_pranks
+  end
+  in_thread do
+    in_wind_sweep
   end
   in_thread do
     2.times do
-      if one_in(2)
-        in_wind_sweep
+      2.times do
+        mo_chimes
       end
-    end
-  end
-  in_thread do
-    4.times do
-      if one_in(2)
-        mo_birds_turning
-      end
+      mo_birds_turning
     end
   end
   in_thread do
     mo_chion
   end
   in_thread do
-    sleep 4
-    mo_ren_chants
+    mo_creepy_atmo
   end
-  mo_creepy_atmo
+  sleep 4
+  wait = 4
+  4.times do
+    mo_ren_chants
+    sleep wait
+    wait = wait - 1
+  end
 end

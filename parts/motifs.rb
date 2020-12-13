@@ -20,8 +20,8 @@ define :mo_beast_awakenes do |pitch = 0, amp = 1|
 end
 
 define :mo_chion do 
-  3.times do
-    dur = rrand(0.01, 0.02)
+  2.times do
+    dur = 0.01
     in_chion_part dur, rrand(0.2, 0.4)
     sleep dur * sample_duration(s_chion) * 1.05
   end
@@ -157,7 +157,7 @@ define :mo_creepy_flute do
 end
 
 define :mo_ren_chants do
-  3.times do
+  2.times do
     in_ren_chore 0, rrand(0.1, 0.3)
     if one_in(2)
       in_ren_chore -2, rrand(0.1, 0.3)
@@ -211,15 +211,11 @@ end
 
 define :mo_slasher do
   in_katana -8
-  sleep 1 
-  in_katana -6
+  sleep [1,2].choose
+  in_katana [-6, -2].choose
   sleep 0.5
-  in_katana -2
-  sleep 0.3
-  in_katana 0
-  sleep 0.8
   in_katana -6
-  sleep 0.3
+  sleep 1
 end
 
 define :mo_chimes do
@@ -232,12 +228,14 @@ end
 define :mo_shouts do
   in_ha_shout -2
   sleep 0.5
-  in_beast 4, 2
-  sleep 2
-  in_beast 6, 1
+  in_beast [3,6].choose, 1
   sleep 1
   in_ha_shout 0
   sleep 0.5
-  in_ha_shout 2
-  sleep 2
+  if one_in(2)
+    in_beast [4,8].choose, rrand_i(1, 3)
+  else
+    in_ha_shout -1
+  end
+  sleep 0.5
 end

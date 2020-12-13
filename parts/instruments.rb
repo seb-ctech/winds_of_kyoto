@@ -125,7 +125,7 @@ define :in_birds do |seed, pitch|
 end
 
 define :in_ren_chore do |pitch = 0, amp = 0.4|
-  len = 0.04
+  len = 0.02
   rate = 1 + 0.1 * pitch
   bgn = rrand(0.2, 1 - len)
   fin = bgn + len
@@ -143,7 +143,7 @@ end
 
 define :in_water_flow do |dir, mul|
   rate = mul * 0.1 * dir
-  sample s_stream, rate: rate, finish: 0.15, release: 1, amp: 0.7
+  sample s_stream, rate: rate, finish: 0.15, release: 1, amp: 0.2
 end
 
 define :in_chion_part do |l, a|
