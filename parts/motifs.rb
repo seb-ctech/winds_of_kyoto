@@ -10,11 +10,11 @@
 define :mo_beast_awakenes do |pitch = 0, amp = 1|
   with_fx :reverb do
     in_beast -8 + pitch, 2, amp
-    pause = 8 - pitch
-    if pitch < 0
-      sleep 8
-    else 
-      sleep 8 - pitch + 1
+    pause = 8 - abs(pitch)
+    if pause < 0
+      sleep 1
+    else
+      sleep pause
     end
   end
 end
@@ -27,8 +27,7 @@ define :mo_chion do
   end
 end
 
-define :mo_flute_calm do |t|
-  tonic = t
+define :mo_flute_calm do 
   with_fx :reverb do
     in_flute scale(tonic, :yu).choose, 3, 0.1
     sleep 0.5
@@ -38,6 +37,15 @@ define :mo_flute_calm do |t|
     end
   end
   sleep 2
+end
+
+define :mo_flute_test do
+  in_play_flute_in_scale 0, 2, 0.2
+  sleep 2
+  in_play_flute_in_scale 3, 2, 0.3
+  sleep 2
+  in_play_flute_in_scale 1, 1, 0.2
+  sleep 1
 end
   
 define :mo_double_woosh do

@@ -1,9 +1,14 @@
 # Winds of Kyoto
 # Usage: change to the $root-folder where you stored "Winds_of_Kyoto" 
 root = "D:\\4_developing\\ctech\\audio-graphics-workfolder\\02\\Winds_of_Kyoto\\sonicpi\\"
+key = :d4
 
 define :path_to_sounds do
   return path_to_sounds = root + "samples/"
+end
+
+define :get_tonic do
+  return key
 end
 
 eval_file root + "parts/instruments.rb"
@@ -37,12 +42,15 @@ end
 # ------------------
 
 # BPM: 60 (60 Beats is one Minute)
-
+comment do
 in_thread(name: :metronome) do
   loop do
     sample :drum_bass_hard, amp: 0.1
     sleep 1
   end
 end
+end
 
-se_demonic_ritual
+loop do
+  mo_flute_test
+end

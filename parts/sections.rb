@@ -18,7 +18,7 @@ define :se_picking_up_the_pace do
   sleep 1
   mo_panshout
   sleep 2
-  4.times do
+  2.times do
     ph_bamboo_game
   end
   in_ghongh
@@ -35,7 +35,7 @@ define :se_passage_to_night do
   in_ren_trance 6
   sleep 5
   in_ghongh 0.8
-  
+
 end
   
 define :se_demonic_ritual do

@@ -9,6 +9,15 @@ define :octave do |m|
   return 12 * m
 end
 
+define :abs do |n|
+  if n < 0
+    return n * -1
+  else
+    return n
+  end
+end
+
+
 #percussive
 s_kshout = path_to_sounds + "66595__robinhood76__00842-karate-shout-1.wav"
 s_bamboowoosh = path_to_sounds + "60013__qubodup__whoosh.flac"
@@ -283,4 +292,15 @@ define :eq6 do |s, v1, v2, v3, v4, v5, v6|
       end
     end
   end
+end
+
+wok_scale = :yu
+notes = scale get_tonic, wok_scale, num_octaves: 2
+
+define :get_notes_amount do
+  return notes.length
+end
+
+define :in_play_flute_in_scale do |interval, length, strength|
+  in_flute notes[interval], length, strength
 end
