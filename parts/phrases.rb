@@ -15,9 +15,7 @@ define :ph_bamboo_game do
   end
   4.times do
     in_thread do
-      2.times do
-        mo_double_woosh
-      end
+      mo_double_woosh
     end
     in_thread do
       if one_in(4)

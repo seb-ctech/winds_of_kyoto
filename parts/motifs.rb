@@ -106,7 +106,8 @@ define :mo_katana_combat do
 end
 
 define :mo_strong_river do
-  sample s_stream, amp: 1.2, rate: 2, release: 1, finish: 0.4
+  s = sample s_stream, amp: 0.0, rate: 2, release: 1, finish: 0.4
+  control s, amp: 1.2, amp_slide: 6
   sleep 12
 end
 
@@ -164,7 +165,7 @@ define :mo_ren_chants do
         in_ren_chore 2, rrand(0.1, 0.3)
       end
     end
-    sleep 4
+    sleep 2
   end
 end
 

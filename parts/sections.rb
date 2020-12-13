@@ -25,9 +25,8 @@ define :se_picking_up_the_pace do
 end
   
 define :se_passage_to_night do
-  2.times do 
-    ph_ceremony
-  end
+  
+  ph_ceremony
   sleep 1
   in_ren_trance 1
   sleep 3
@@ -36,6 +35,7 @@ define :se_passage_to_night do
   in_ren_trance 6
   sleep 5
   in_ghongh 0.8
+  
 end
   
 define :se_demonic_ritual do
