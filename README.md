@@ -32,4 +32,5 @@ The composition was layed out like classical music structure. First the basic sa
 
 ### Disclaimer
 
-I got the Samples from [Freesound](https://freesound.org/). 
+I got the Samples from [Freesound](https://freesound.org/). All rights are reserved to the rightful owners.
+They were only used in the context of university project. 
