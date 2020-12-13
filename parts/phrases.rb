@@ -8,27 +8,22 @@
 # Things in threads should be declared before the main pattern
 
 define :ph_bamboo_game do
-  in_thread(name: :ph1_2) do
+  in_thread do
     2.times do
       mo_bamboo_decoration
     end
   end
   4.times do
     in_thread do
-      mo_double_woosh
-    end
-    in_thread do
       mo_flute
     end
     in_thread do
-      if one_in(4)
+      if one_in(3)
         in_random_word
-      end
-    end
-    in_thread do
-      if one_in(2)
+      else 
         mo_training
       end
+      mo_double_woosh
     end
     mo_drumbeats
   end
@@ -69,12 +64,8 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
       mo_chion
     end
   end
-  sample s_wind, finish: 0.6, amp: 0.3
-  sample s_stream, amp: 0.2
-  sample s_birds
-  sample s_bamboogmni, finish: 0.55
+  mo_calm_atmo
   if one_in(2)
-    sleep 8
     in_group_hey
   end
 end
@@ -142,7 +133,9 @@ define :ph_ceremony do
   sleep 4
   wait = 4
   4.times do
-    mo_creepy_flute
+    in_thread do
+      mo_creepy_flute
+    end
     mo_ren_chants
     sleep wait
     wait = wait - 1

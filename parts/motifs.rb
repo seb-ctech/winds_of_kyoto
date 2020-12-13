@@ -7,6 +7,14 @@
 # TODO: Motifs need to incapsulate sleep intervals
 # ---------------------------------------------
 
+define :mo_calm_atmo do
+  sample s_wind, finish: 0.4, amp: 0.3, release: 1
+  sample s_stream, amp: 0.2, finish: 0.8, release: 1
+  sample s_birds, finish: 0.6, release: 1
+  sample s_bamboogmni, finish: 0.4, release: 1
+  sleep 20
+end
+
 define :mo_beast_awakenes do |pitch = 0, amp = 1|
   with_fx :reverb do
     in_beast -8 + pitch, 2, amp
@@ -45,10 +53,10 @@ define :mo_flute do
     root = rrand_i(0, get_notes_amount / 2.0)
     in_play_flute_in_scale root, 1, 0.2
     sleep 1
-    dur = [0.5, 1.5].choose
+    dur = [0.5, 0.75].choose
     in_play_flute_in_scale root + [2, 4].choose, dur, 0.1
     sleep dur
-    3.times do
+    2.times do
       dur = [0.25, 0.5, 0.75].tick
       in_play_flute_in_scale root + [0, 1, 3].choose, dur, 0.1
       sleep dur * 2
@@ -79,7 +87,7 @@ end
 define :mo_double_woosh do
   2.times do
     in_random_woosh
-    sleep [0.25, 0,5, 1].choose
+    sleep [0.5, 1].choose
   end
   sleep 1
 end
