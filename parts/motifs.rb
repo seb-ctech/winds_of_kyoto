@@ -31,13 +31,13 @@ define :mo_flute_calm do
   with_fx :reverb, room: 0.8 do
     root = rrand_i(0, get_notes_amount / 2.0)
     in_play_flute_in_scale root, 3, 0.4
-    sleep 2
-    in_play_flute_in_scale root + [-1, 1].choose, 0.1, 0.3
+    sleep 1.5
+    in_play_flute_in_scale root + [-1, 1].choose, 0.2, 0.2
     sleep 0.2
-    in_play_flute_in_scale root + 3, 0.1, 0.3
+    in_play_flute_in_scale root + 3, 0.2, 0.2
     sleep 0.2
   end
-  sleep 1
+  sleep 2
 end
 
 define :mo_flute do
@@ -65,7 +65,7 @@ define :mo_creepy_flute do |r = 0|
   end
   with_fx :reverb, room: 0.9 do
     in_play_flute_in_scale root, 2, 0.2
-    sleep 2
+    sleep 1
     2.times do
       dur = [0.25, 0.5, 0.75, 1].choose
       in_play_flute_in_scale root + [-1, 1, 2].choose, dur, 0.1

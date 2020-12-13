@@ -226,33 +226,35 @@ end
 
 
 # Additive Sound (Use synths that overlap to produce interesting flute like sound)
-define :in_flute do |n, su, a|
-  attack = 0.15
-  s = su - attack - 0.2
+define :in_flute do |n, length, a|
+  attack = 0.15 * length * 0.8
+  release = 0.2
+  s = (length - attack - release) * 0.8
+  dynamics = a * 0.4
   if s < 0
     s = 0
   end
   f = midi_to_hz(n)
   # Fundamental Frequency
-  main = synth :sine, note: n, amp: a, attack: attack, attack_level: 1.2, decay: 0.4, release: 0.3, sustain: s
+  main = synth :sine, note: n, amp: dynamics, attack: attack, attack_level: 1.2, decay: 0.4, release: release + 0.1, sustain: s
   # Harmonics 
-  h2 = synth :sine, note: hz_to_midi( harmonic(f, 2) ), amp: a * 0.8, attack: attack, decay: 0.2, release: 0.2, sustain: s
-  h3 = synth :sine, note: hz_to_midi( harmonic(f, 2.5) ), amp: a * 0.05, attack: attack * 1.5, decay: 0.1, release: 0.2, sustain: s
+  h2 = synth :sine, note: hz_to_midi( harmonic(f, 2) ), amp: dynamics * 0.8, attack: attack, decay: 0.2, release: release, sustain: s
+  h3 = synth :sine, note: hz_to_midi( harmonic(f, 2.5) ), amp: dynamics * 0.05, attack: attack * 1.5, decay: 0.1, release: release, sustain: s
   with_fx :tremolo, phase: 0.4, depth: 0.3 do
-    h4 = synth :sine, note: hz_to_midi( harmonic(f, 3) ), amp: a * 0.2, attack: attack * 1.2, decay: 0.2, release: 0.2, sustain: s
-    h5 = synth :sine, note: hz_to_midi( harmonic(f, 3.5) ), amp: a * 0.05, attack: attack * 2, decay: 0.2, release: 0.1, sustain: s
-    h6 = synth :sine, note: hz_to_midi( harmonic(f, 4) ), amp: a * 0.02, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
-    h7 = synth :sine, note: hz_to_midi( harmonic(f, 5) ), amp: a * 0.02, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
-    h8 = synth :sine, note: hz_to_midi( harmonic(f, 6) ), amp: a * 0.01, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
-    h9 = synth :sine, note: hz_to_midi( harmonic(f, 7) ), amp: a * 0.01, attack: attack * 1.2, decay: 0.2, release: 0.1, sustain: s
+    h4 = synth :sine, note: hz_to_midi( harmonic(f, 3) ), amp: dynamics * 0.2, attack: attack * 1.2, decay: 0.2, release: release, sustain: s
+    h5 = synth :sine, note: hz_to_midi( harmonic(f, 3.5) ), amp: dynamics * 0.05, attack: attack * 2, decay: 0.2, release: release * 0.5, sustain: s
+    h6 = synth :sine, note: hz_to_midi( harmonic(f, 4) ), amp: dynamics * 0.02, attack: attack * 1.2, decay: 0.2, release: release * 0.5, sustain: s
+    h7 = synth :sine, note: hz_to_midi( harmonic(f, 5) ), amp: dynamics * 0.02, attack: attack * 1.2, decay: 0.2, release: release * 0.5, sustain: s
+    h8 = synth :sine, note: hz_to_midi( harmonic(f, 6) ), amp: dynamics * 0.01, attack: attack * 1.2, decay: 0.2, release: release * 0.5, sustain: s
+    h9 = synth :sine, note: hz_to_midi( harmonic(f, 7) ), amp: dynamics * 0.01, attack: attack * 1.2, decay: 0.2, release: release * 0.5, sustain: s
   end
   # Noise and Texture
   with_fx :lpf do
-    n1 = synth :noise, cutoff: hz_to_midi( harmonic(f, 0.5) ), amp: a * 0.01, attack: attack, decay: 0.2, release: 0.2, sustain: s
+    n1 = synth :noise, cutoff: hz_to_midi( harmonic(f, 0.5) ), amp: dynamics * 0.01, attack: attack, decay: 0.2, release: 0.2, sustain: s
   end
   with_fx :band_eq, freq: hz_to_midi(harmonic(f, 4)), res: 0.2, amp: 0.5 do
-    n1 = synth :noise, cutoff: n + octave(1), amp: a * 0.2, attack: attack, decay: 0.2, release: 0.2, sustain: s
-    n2 = synth :noise, cutoff: hz_to_midi( harmonic(f, 4) ), amp: a * 0.3, attack: attack, decay: 0.2, release: 0.2, sustain: s
+    n1 = synth :noise, cutoff: n + octave(1), amp: dynamics * 0.2, attack: attack, decay: 0.2, release: 0.2, sustain: s
+    n2 = synth :noise, cutoff: hz_to_midi( harmonic(f, 4) ), amp: dynamics * 0.3, attack: attack, decay: 0.2, release: 0.2, sustain: s
   end
   # Frequency Tremolo
   if s > 1

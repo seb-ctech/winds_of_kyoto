@@ -1,7 +1,7 @@
 # Winds of Kyoto
 # Usage: change to the $root-folder where you stored "Winds_of_Kyoto" 
 root = "D:\\4_developing\\ctech\\audio-graphics-workfolder\\02\\Winds_of_Kyoto\\sonicpi\\"
-key = :d4
+key = :g3
 
 define :path_to_sounds do
   return path_to_sounds = root + "samples/"
@@ -51,6 +51,4 @@ in_thread(name: :metronome) do
 end
 end
 
-loop do
-  mo_flute
-end
+winds_of_kyoto
