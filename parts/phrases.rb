@@ -18,6 +18,9 @@ define :ph_bamboo_game do
       mo_double_woosh
     end
     in_thread do
+      mo_flute
+    end
+    in_thread do
       if one_in(4)
         in_random_word
       end
@@ -55,9 +58,9 @@ define :ph_peaceful_atmo do |flute = false, chion = false|
     in_thread do
       sleep 1 
       3.times do
-        mo_flute_calm :c4
+        mo_flute_calm
       end
-      mo_flute_calm :g4
+      mo_flute_calm
     end
   end
   if chion
@@ -91,11 +94,17 @@ define :ph_combat do
         in_thread do
           mo_ren_chants
         end
+        in_thread do
+          mo_creepy_flute
+        end
         mo_slasher
         mo_shouts
       else
         in_thread do
           mo_chion
+        end
+        in_thread do
+          mo_flute
         end
         in_group_hey
         mo_katana_combat
@@ -133,6 +142,7 @@ define :ph_ceremony do
   sleep 4
   wait = 4
   4.times do
+    mo_creepy_flute
     mo_ren_chants
     sleep wait
     wait = wait - 1

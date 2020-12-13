@@ -56,7 +56,7 @@ define :se_passage_to_morning do
   in_ghongh
   sleep 1
   2.times do
-    ph_bamboo_game #somehow changed
+    ph_bamboo_game
   end
 end
   

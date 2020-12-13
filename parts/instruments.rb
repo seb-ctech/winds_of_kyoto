@@ -298,7 +298,7 @@ wok_scale = :yu
 notes = scale get_tonic, wok_scale, num_octaves: 2
 
 define :get_notes_amount do
-  return notes.length
+  return notes.to_a.length
 end
 
 define :in_play_flute_in_scale do |interval, length, strength|

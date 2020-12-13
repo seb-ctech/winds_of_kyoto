@@ -28,24 +28,52 @@ define :mo_chion do
 end
 
 define :mo_flute_calm do 
-  with_fx :reverb do
-    in_flute scale(tonic, :yu).choose, 3, 0.1
-    sleep 0.5
-    2.times do
-      in_flute scale(tonic, :yu).tick, 0.1, rrand(0.05, 0.1)
-      sleep 0.5
-    end
+  with_fx :reverb, room: 0.8 do
+    root = rrand_i(0, get_notes_amount / 2.0)
+    in_play_flute_in_scale root, 3, 0.4
+    sleep 2
+    in_play_flute_in_scale root + [-1, 1].choose, 0.1, 0.3
+    sleep 0.2
+    in_play_flute_in_scale root + 3, 0.1, 0.3
+    sleep 0.2
   end
-  sleep 2
+  sleep 1
 end
 
-define :mo_flute_test do
-  in_play_flute_in_scale 0, 2, 0.2
+define :mo_flute do
+  with_fx :reverb, room: 0.8 do
+    root = rrand_i(0, get_notes_amount / 2.0)
+    in_play_flute_in_scale root, 1, 0.2
+    sleep 1
+    dur = [0.5, 1.5].choose
+    in_play_flute_in_scale root + [2, 4].choose, dur, 0.1
+    sleep dur
+    3.times do
+      dur = [0.25, 0.5, 0.75].tick
+      in_play_flute_in_scale root + [0, 1, 3].choose, dur, 0.1
+      sleep dur * 2
+    end
+    sleep 1
+  end
+end
+
+define :mo_creepy_flute do |r = 0|
+  if r == 0
+    root = rrand_i(0, get_notes_amount / 2.0)
+  else 
+    root = r
+  end
+  with_fx :reverb, room: 0.9 do
+    in_play_flute_in_scale root, 2, 0.2
+    sleep 2
+    2.times do
+      dur = [0.25, 0.5, 0.75, 1].choose
+      in_play_flute_in_scale root + [-1, 1, 2].choose, dur, 0.1
+      sleep dur
+    end
+    in_play_flute_in_scale root + 1, 2, 0.1
+  end
   sleep 2
-  in_play_flute_in_scale 3, 2, 0.3
-  sleep 2
-  in_play_flute_in_scale 1, 1, 0.2
-  sleep 1
 end
   
 define :mo_double_woosh do
@@ -148,19 +176,6 @@ define :mo_drumbeats do |intense=false|
       end
     end
     sleep 1
-  end
-end
-
-define :mo_creepy_flute do
-  with_fx :reverb, room: 0.9 do
-    in_flute :a4, 2, 0.1
-    sleep 1
-    in_flute :g4, 0.5, 0.06
-    sleep 1
-    in_flute :f4, 0.25, 0.1
-    sleep 1
-    in_flute :fs4, 2, 0.04
-    sleep 2
   end
 end
 

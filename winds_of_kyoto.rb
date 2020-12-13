@@ -52,5 +52,5 @@ end
 end
 
 loop do
-  mo_flute_test
+  mo_flute
 end
