@@ -1,7 +1,13 @@
 # Winds of Kyoto
-# Usage: change to the $root-folder where you stored "Winds_of_Kyoto" 
+# Usage: 1. change to the set the "root" to the path where you stored "Winds_of_Kyoto"
+#        2. set the "key" you would like the flute to play in
+#        3. set the random "seed" you would like to use
+#        4. Run code with Sonic Pi!
+#        5. Enjoy!
+
 root = "D:\\4_developing\\ctech\\audio-graphics-workfolder\\02\\Winds_of_Kyoto\\sonicpi\\"
 key = :g3
+seed = 0
 
 define :path_to_sounds do
   return path_to_sounds = root + "samples/"
@@ -41,14 +47,5 @@ end
 # PLAY PIECE  
 # ------------------
 
-# BPM: 60 (60 Beats is one Minute)
-comment do
-in_thread(name: :metronome) do
-  loop do
-    sample :drum_bass_hard, amp: 0.1
-    sleep 1
-  end
-end
-end
-
+use_random_seed 0
 winds_of_kyoto

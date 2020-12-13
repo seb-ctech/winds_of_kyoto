@@ -1,10 +1,7 @@
-#TODO: Create interesting motifs with variable opts and good variations
-
 # ---------------------------------------------
 # MOTIFS
 # --> Harmonized and Rhythmical, variation through randomnes! And some control over parameters.
 # change must be subtle! If you change too much, it will sound to foreign and destroy the cohesion, means of harmonization!
-# TODO: Motifs need to incapsulate sleep intervals
 # ---------------------------------------------
 
 define :mo_calm_atmo do

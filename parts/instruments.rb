@@ -1,3 +1,7 @@
+# --------------------------------------
+# INSTRUMENTS
+# Instruments and Parametrized Samples. To be used to form the motifs
+# --------------------------------------
 
 # Helper Functions
 
@@ -85,11 +89,6 @@ end
 define :s_birds do
   return s_birds
 end
-
-# --------------------------------------
-# INSTRUMENTS
-# Instruments and Parametrized Samples. To be used to form the motifs
-# --------------------------------------
 
 define :in_short_drum do
   with_fx :compressor do

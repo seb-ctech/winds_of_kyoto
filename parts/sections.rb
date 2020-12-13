@@ -1,4 +1,3 @@
-#TODO: Create dramaturgy, so it sounds complete
 # --------------------------------
 # SECTIONS
 # --> how phrases are organized in independent and finished musical ideas. Like scenes in a movie

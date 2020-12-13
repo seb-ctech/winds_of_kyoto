@@ -1,11 +1,7 @@
-#TODO: Make Phrases that sound harmonic and well timed (defined), has an harmonic progression.
 # -------------------------------
 # PHRASES
 # --> repetition and variation of motifs, has a definite rhythm, punctuation and cadence, 4 bars.
 # -------------------------------
-
-#TODO: Refactor phrases to contain one main pattern that is out of a separate thread. 
-# Things in threads should be declared before the main pattern
 
 define :ph_bamboo_game do
   in_thread do
@@ -80,7 +76,7 @@ define :ph_combat do
   in_thread do
   end
   in_thread do
-    2.times do
+    3.times do
       if one_in(2)
         in_thread do
           mo_ren_chants

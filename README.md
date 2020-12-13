@@ -4,6 +4,18 @@ This is my "Audio Production" project with the theme of Kyoto. Since my Trip to 
 Japanese Temple somewhere on the country-side of Kyoto, that turns ritualistic and demonic during the night. The overarching Idea is to use
 sounds that propagate through the air, like swinging sounds, wind-chimes, chants and wind. Hence the name of the composition: "Winds of Kyoto".
 
+# Concept
+
+With this project I wanted to experiment how to use simple sounds to tell a story while at the same time have a "real" musique concrete composition. The Piece is structured in 3 Main acts. First it starts on a simple establisher to set the mood and create a peaceful atmosphere.
+Then the first act unfolds with a training unit of a group of monks which is highly percussive and energetic in contrast to the opening.
+After a while we switch the setting and when the sun starts to set, ominous voices announce a dark sect plotting and chanting down the river.
+This leads to the second act: an atmospheric and ominous demon summoning dominated by a dark growl and chants. However the demon is kept on a short leash and immediately attacked by the guarding monks. What turns into an exchange of hits between dark sect and monks results in a victory for good. After a final celebration the temple meadow settles back to peace. Or so it seems...
+
+# Technical Details
+
+For the whole piece I used 11 Samples, from which 5 are solely acustics for the background atmosphere. Other 2 Samples where the chanting monks and a japanese ceremony used to depict the two different factions. Leaving me with 4 main samples I really used to create the piece. A highly cheese karate shout, from which I extracted most shouts and the demon growls by playing with the play rate, a bamboo swing a katana hit and a ghong used as percussive force.
+Additionally I used additive synthesis to design a flute instrument out of 9 sine-wave synthesizers with a slight tremolo for realistic trimbre, inspired by a traditional japanese "shakuhaki".
+
 ## Setup
 
 The Project was realised with Sonic Pi. To take advantage of a proper setup I developed the code inside "Visual Studio Code" and used the ruby-extension for syntax-highlighting. With the help of the "sonic-pi" extension in Visual Studio Code I can run the code on an opened sonic-pi instance. I also recorded a final "wav" for the final display.
@@ -17,9 +29,8 @@ You can download my repository and run the code over the Visual Studio Code Exte
 
 ### Quick note to the composition
 
-*The composition is organized in an intro and outro with an A and a B section in the middle, that raises the pace and the tension.
-The middle part uses many programming techniques to randomize the outcome and will sound differently on every run, if you change the "random_seed" because of how sonic-pi threats randomness.
+The composition was layed out like classical music structure. First the basic samples and sonic pi synthesizers where combined to more useful and concise "Instruments". These instruments where then used to form basic motifs. The motifs contain the small sequences and define the timing with the sleep function. The motifs then get combined a weawed together in phrases which then get composed to sequences. The whole piece is composed by 5 sequences. 
 
 ### Disclaimer
 
-I got the Sounds and Samples from [Freesound](https://freesound.org/). 
+I got the Samples from [Freesound](https://freesound.org/). 
