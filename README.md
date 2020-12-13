@@ -22,8 +22,7 @@ The Project was realised with Sonic Pi. To take advantage of a proper setup I de
 
 After downloading or cloaning the repository you have two options.
 You can either run the code by using "run_code" and the path to the files inside a sonic-pi buffer.
-Or you can run the code over the Visual Studio Code Extension "sonic-pi" and "Run code with sonic Pi". Then you need to change "root" to match your local path to the root-directory of the project.  
-Otherwise just listen to the rendered audio file!
+Or you can run the code over the Visual Studio Code Extension "sonic-pi" and "Run code with sonic Pi". Then you need to change "root" to match your local path to the root-directory of the project. This way you can personalize your listening experience by specifying a different key and seed. Otherwise just listen to the rendered audio file!
 
 **Enjoy!**
 
