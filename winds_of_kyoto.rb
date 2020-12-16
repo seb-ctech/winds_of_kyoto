@@ -47,5 +47,5 @@ end
 # PLAY PIECE  
 # ------------------
 
-use_random_seed 0
+use_random_seed seed 
 winds_of_kyoto
